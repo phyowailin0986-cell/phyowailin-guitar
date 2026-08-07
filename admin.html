@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Add Song</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background: #121212; color: #fff; padding: 20px; max-width: 600px; margin: auto; }
+    h1 { color: #f39c12; margin-bottom: 20px; text-align: center; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; color: #aaa; }
+    input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #333; background: #1e1e1e; color: #fff; }
+    textarea { height: 180px; font-family: monospace; }
+    button { width: 100%; padding: 12px; background: #f39c12; border: none; border-radius: 5px; color: #000; font-weight: bold; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+    button:hover { background: #e67e22; }
+    #status { margin-top: 15px; text-align: center; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h1>🎸 Add New Song</h1>
+
+  <form id="addSongForm">
+    <div class="form-group">
+      <label>Song Title</label>
+      <input type="text" id="title" placeholder="e.g. MAMA'S TRAIN" required>
+    </div>
+
+    <div class="form-group">
+      <label>Key</label>
+      <input type="text" id="key" placeholder="e.g. Em or G Major">
+    </div>
+
+    <div class="form-group">
+      <label>BPM / Tempo</label>
+      <input type="text" id="bpm" placeholder="e.g. 78">
+    </div>
+
+    <div class="form-group">
+      <label>YouTube URL</label>
+      <input type="url" id="youtubeUrl" placeholder="https://youtu.be/...">
+    </div>
+
+    <div class="form-group">
+      <label>Chords & Lyrics</label>
+      <textarea id="lyrics" placeholder="[Intro]&#10;G C D Em..."></textarea>
+    </div>
+
+    <button type="submit">🚀 Save to Firebase Database</button>
+  </form>
+
+  <p id="status"></p>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
+      authDomain: "phyowailin-guitar.firebaseapp.com",
+      projectId: "phyowailin-guitar",
+      storageBucket: "phyowailin-guitar.firebasestorage.app",
+      messagingSenderId: "402954240690",
+      appId: "1:402954240690:web:953982abfcb3866c9cffab",
+      measurementId: "G-CCLP6CKXZL"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('addSongForm');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.innerText = "Saving to database...";
+      status.style.color = "#f39c12";
+
+      const newSong = {
+        title: document.getElementById('title').value,
+        key: document.getElementById('key').value,
+        bpm: document.getElementById('bpm').value,
+        youtubeUrl: document.getElementById('youtubeUrl').value,
+        lyrics: document.getElementById('lyrics').value,
+        createdAt: new Date()
+      };
+
+      try {
+        await addDoc(collection(db, "songs"), newSong);
+        status.innerText = "✅ Song added successfully!";
+        status.style.color = "#2ecc71";
+        form.reset();
+      } catch (error) {
+        console.error("Error adding song: ", error);
+        status.innerText = "❌ Error adding song. Check Firebase setup.";
+        status.style.color = "#e74c3c";
+      }
+    });
+  </script>
+</body>
+</html>
