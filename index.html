@@ -48,14 +48,14 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // ⚠️ မိမိ၏ Firebase Console မှ firebaseConfig အချက်အလက်များ အစားထိုးပါ
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
+      authDomain: "phyowailin-guitar.firebaseapp.com",
+      projectId: "phyowailin-guitar",
+      storageBucket: "phyowailin-guitar.firebasestorage.app",
+      messagingSenderId: "402954240690",
+      appId: "1:402954240690:web:953982abfcb3866c9cffab",
+      measurementId: "G-CCLP6CKXZL"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -70,7 +70,7 @@
         catalogView.innerHTML = '';
         
         if(querySnapshot.empty) {
-          catalogView.innerHTML = '<p>No songs found in database yet.</p>';
+          catalogView.innerHTML = '<p>No songs found in database yet. Add songs using admin.html</p>';
           return;
         }
 
@@ -91,7 +91,7 @@
         });
       } catch (e) {
         console.error("Error loading songs: ", e);
-        catalogView.innerHTML = '<p>Error loading data. Check Firebase configuration.</p>';
+        catalogView.innerHTML = '<p>Error loading data from Firebase.</p>';
       }
     }
 
