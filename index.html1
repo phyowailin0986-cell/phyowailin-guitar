@@ -1,41 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Phyo Wai Lin Guitar - MAMA'S TRAIN OUT NOW</title>
-<style>
-body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial,sans-serif;text-align:center}
-.hero{padding:60px 20px;background:linear-gradient(180deg,#1a1a1a,#000)}
-.gold{color:#FFD700}
-.btn{background:gold;color:#000;padding:14px 28px;border-radius:30px;text-decoration:none;font-weight:bold;display:inline-block;margin:10px}
-.new{background:linear-gradient(135deg,#ff6a00,#cc0000);padding:40px 20px;margin:20px;border-radius:15px}
-iframe{border-radius:12px;max-width:600px;width:100%}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phyo Wai Lin Guitar - Official Catalog</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background: #121212; color: #fff; padding: 20px; }
+    header { text-align: center; padding: 20px 0; border-bottom: 1px solid #333; }
+    h1 { color: #f39c12; margin-bottom: 10px; }
+    input[type="text"] { width: 100%; max-width: 400px; padding: 10px; border-radius: 5px; border: none; margin-top: 10px; }
+    .song-list { display: grid; gap: 15px; margin-top: 20px; }
+    .song-card { background: #1e1e1e; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12; cursor: pointer; }
+    .song-card:hover { background: #2a2a2a; }
+    .song-title { font-size: 1.2rem; font-weight: bold; color: #fff; }
+    .song-meta { font-size: 0.85rem; color: #aaa; margin: 5px 0; }
+    .btn { display: inline-block; background: #f39c12; color: #000; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-top: 8px; font-size: 0.85rem; }
+    #detail-view { display: none; background: #1e1e1e; padding: 20px; border-radius: 8px; margin-top: 20px; }
+    .back-btn { background: #444; color: #fff; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 15px; }
+    .chords { font-family: monospace; white-space: pre-wrap; background: #000; padding: 15px; border-radius: 5px; color: #00ff66; margin-top: 15px; }
+  </style>
 </head>
 <body>
-<div class="hero">
-<h1 class="gold" style="font-size:42px;margin:0">PHYO WAI LIN GUITAR</h1>
-<p>Blues Rock Artist | Myanmar</p>
-<h2>🚂 MAMA'S TRAIN OUT NOW! 🔥</h2>
-<a class="btn" href="https://youtu.be/FD5YVFMpKDo" target="_blank">▶️ Watch on YouTube</a>
-</div>
 
-<div class="new">
-<h2 style="color:gold;font-size:32px;margin-top:0">MAMA'S TRAIN (500 Miles From Home)</h2>
-<p>My First Blues Rock Original - Dedicated to everyone far from home ❤️</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FD5YVFMpKDo" frameborder="0" allowfullscreen></iframe>
-<br><br>
-<a class="btn" style="background:#000;color:gold" href="https://youtu.be/FD5YVFMpKDo" target="_blank">YouTube</a>
-<a class="btn" style="background:#fff;color:#000" href="https://www.facebook.com/phyowailin.guitar.official" target="_blank">Facebook</a>
-</div>
+  <header>
+    <h1>🎸 PHYO WAI LIN GUITAR</h1>
+    <p>Official Songs & Chord Catalog</p>
+    <input type="text" id="searchInput" onkeyup="filterSongs()" placeholder="🔍 Search songs...">
+  </header>
 
-<div style="padding:40px 20px">
-<h3 class="gold">About</h3>
-<p style="max-width:600px;margin:auto;color:#aaa">Blues Rock guitarist from Myanmar, sharing original music and guitar fire. New single MAMA'S TRAIN is my journey 500 miles from home.</p>
-<p style="margin-top:30px">🎸 Official: https://phyowailin0986-cell.github.io/phyowailin-guitar/<br>
-📧 Contact via Facebook & Instagram</p>
-</div>
+  <main>
+    <div id="catalog-view" class="song-list">
+      <p id="loading-text">Loading songs from Firebase...</p>
+    </div>
 
+    <div id="detail-view">
+      <button class="back-btn" onclick="closeSong()">← Back to Catalog</button>
+      <h2 id="detail-title"></h2>
+      <p id="detail-meta" style="color: #aaa; margin: 5px 0;"></p>
+      <div class="chords" id="detail-lyrics"></div>
+      <br>
+      <a id="detail-yt" class="btn" style="background:#ff0000; color:#fff;" target="_blank">🎬 Watch on YouTube</a>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // ⚠️ မိမိ၏ Firebase Console မှ firebaseConfig အချက်အလက်များ အစားထိုးပါ
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let songsCache = [];
+
+    async function loadSongs() {
+      const catalogView = document.getElementById('catalog-view');
+      try {
+        const querySnapshot = await getDocs(collection(db, "songs"));
+        catalogView.innerHTML = '';
+        
+        if(querySnapshot.empty) {
+          catalogView.innerHTML = '<p>No songs found in database yet.</p>';
+          return;
+        }
+
+        querySnapshot.forEach((doc) => {
+          const song = doc.data();
+          song.id = doc.id;
+          songsCache.push(song);
+
+          const card = document.createElement('div');
+          card.className = 'song-card';
+          card.onclick = () => openSong(song.id);
+          card.innerHTML = `
+            <div class="song-title">🎵 ${song.title}</div>
+            <div class="song-meta">Key: ${song.key || 'N/A'} | BPM: ${song.bpm || 'N/A'}</div>
+            <button class="btn">View Chords & Lyrics</button>
+          `;
+          catalogView.appendChild(card);
+        });
+      } catch (e) {
+        console.error("Error loading songs: ", e);
+        catalogView.innerHTML = '<p>Error loading data. Check Firebase configuration.</p>';
+      }
+    }
+
+    window.openSong = function(id) {
+      const song = songsCache.find(s => s.id === id);
+      if (!song) return;
+
+      document.getElementById('detail-title').innerText = song.title;
+      document.getElementById('detail-meta').innerText = `Key: ${song.key || 'N/A'} | BPM: ${song.bpm || 'N/A'}`;
+      document.getElementById('detail-lyrics').innerText = song.lyrics || 'No lyrics/chords provided.';
+      
+      const ytBtn = document.getElementById('detail-yt');
+      if (song.youtubeUrl) {
+        ytBtn.href = song.youtubeUrl;
+        ytBtn.style.display = 'inline-block';
+      } else {
+        ytBtn.style.display = 'none';
+      }
+
+      document.getElementById('catalog-view').style.display = 'none';
+      document.getElementById('detail-view').style.display = 'block';
+    }
+
+    window.closeSong = function() {
+      document.getElementById('catalog-view').style.display = 'grid';
+      document.getElementById('detail-view').style.display = 'none';
+    }
+
+    window.filterSongs = function() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let cards = document.getElementsByClassName('song-card');
+      for (let card of cards) {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? "block" : "none";
+      }
+    }
+
+    loadSongs();
+  </script>
 </body>
 </html>
