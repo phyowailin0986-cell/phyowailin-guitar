@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Add Song</title>
+  <title>Admin Dashboard - Phyo Wai Lin Guitar</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-    body { background: #121212; color: #fff; padding: 20px; max-width: 600px; margin: auto; }
-    h1 { color: #f39c12; margin-bottom: 20px; text-align: center; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; color: #aaa; }
-    input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #333; background: #1e1e1e; color: #fff; }
-    textarea { height: 180px; font-family: monospace; }
-    button { width: 100%; padding: 12px; background: #f39c12; border: none; border-radius: 5px; color: #000; font-weight: bold; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background: #121212; color: #fff; padding: 20px; max-width: 700px; margin: auto; }
+    h1 { color: #f39c12; margin-bottom: 20px; text-align: center; font-size: 1.8rem; }
+   .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; color: #aaa; font-weight: bold; }
+    input, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1e1e1e; color: #fff; font-size: 1rem; }
+    textarea { height: 180px; font-family: monospace; line-height: 1.5; }
+    button { width: 100%; padding: 14px; background: #f39c12; border: none; border-radius: 8px; color: #000; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 10px; transition: 0.3s; }
     button:hover { background: #e67e22; }
-    #status { margin-top: 15px; text-align: center; font-weight: bold; }
+    #status, #bulkStatus { margin-top: 15px; text-align: center; font-weight: bold; min-height: 20px; }
+    hr { margin:30px 0; border: none; border-top: 1px solid #333; }
+   .note { background: #1e1e1e; padding: 10px; border-radius: 5px; font-size: 0.9rem; color: #ccc; margin-bottom: 15px; }
   </style>
 </head>
 <body>
 
-  <h1>🎸 Add New Song</h1>
+  <h1>🎸 Add New Song - 1 ပုဒ်ချင်း</h1>
 
   <form id="addSongForm">
     <div class="form-group">
@@ -44,13 +46,35 @@
 
     <div class="form-group">
       <label>Chords & Lyrics</label>
-      <textarea id="lyrics" placeholder="[Intro]&#10;G C D Em..."></textarea>
+      <textarea id="lyrics" placeholder="[Intro]
+G C
+သီချင်းစာသား..."></textarea>
     </div>
 
     <button type="submit">🚀 Save to Firebase Database</button>
   </form>
 
   <p id="status"></p>
+
+  <hr>
+
+  <h1>📋 Bulk Add - အများကြီးတစ်ခါတည်း</h1>
+  <div class="note">
+    <b>Format:</b> Title | Key | BPM | YouTube | Lyrics <br>
+    Line တစ်ခုကို သီချင်းတစ်ပုဒ်ဖြစ်မယ်။ `|` နဲ့ခွဲပေးပါ
+  </div>
+
+  <div class="form-group">
+    <textarea id="bulkInput" rows="12" placeholder="ဥပမာ:
+မေတ္တာရဲ့သံသရာ | C | 78 | https://youtu.be/xxx | [Verse]
+C G
+ချစ်လို့မဝ...
+နောက်တစ်ပုဒ် | G | 90 | | [Chorus]
+Em C G D"></textarea>
+  </div>
+
+  <button type="button" onclick="bulkAdd()">🚀 တစ်ခါတည်းထည့်မယ်</button>
+  <p id="bulkStatus"></p>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -71,7 +95,9 @@
 
     const form = document.getElementById('addSongForm');
     const status = document.getElementById('status');
+    const bulkStatus = document.getElementById('bulkStatus');
 
+    // 1 ပုဒ်ချင်းထည့်တာ
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       status.innerText = "Saving to database...";
@@ -97,6 +123,41 @@
         status.style.color = "#e74c3c";
       }
     });
+
+    // Bulk Add Function
+    window.bulkAdd = async () => {
+      const lines = document.getElementById('bulkInput').value.trim().split('\n');
+      let count = 0;
+      bulkStatus.innerText = "Saving... 0%";
+      bulkStatus.style.color = "#f39c12";
+
+      for(const line of lines){
+        if(line.trim() == '' || line.startsWith('ဥပမာ')) continue;
+        const parts = line.split('|');
+        if(parts.length < 5) continue;
+
+        const newSong = {
+          title: parts[0].trim(),
+          key: parts[1].trim(),
+          bpm: parts[2].trim(),
+          youtubeUrl: parts[3].trim(),
+          lyrics: parts[4].trim(),
+          createdAt: new Date()
+        };
+
+        try {
+          await addDoc(collection(db, "songs"), newSong);
+          count++;
+          bulkStatus.innerText = `Saving... ${count} ပုဒ်`;
+        } catch (error) {
+          console.error("Error: ", error);
+        }
+      }
+
+      bulkStatus.innerText = `✅ ${count} ပုဒ်ထည့်ပြီးပါပြီ!`;
+      bulkStatus.style.color = "#2ecc71";
+      document.getElementById('bulkInput').value = '';
+    }
   </script>
 </body>
 </html>
