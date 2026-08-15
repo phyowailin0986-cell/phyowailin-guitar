@@ -5,34 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Phyo Wai Lin Guitar</title>
 <style>
-  body {
-    background: #111;
-    color: #eee;
-    font-family: 'Noto Sans Myanmar', sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  h1 {
-    text-align: center;
-    color: #4ade80;
-  }
-  .song-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  .song-info {
-    color: #aaa;
-    margin-bottom: 15px;
-  }
-  /* ← ဒီနေရာအရေးကြီးဆုံး */
+  body { background: #111; color: #eee; font-family: 'Noto Sans Myanmar', sans-serif; margin: 0; padding: 20px; }
+  .container { max-width: 800px; margin: 0 auto; background: #1a1a1a; padding: 20px; border-radius: 10px; }
+  h1 { text-align: center; color: #4ade80; }
+  .song-title { font-size: 24px; font-weight: bold; margin-bottom: 5px; color: #f39c12; }
+  .song-info { color: #aaa; margin-bottom: 15px; }
+  /* ← အရေးကြီးဆုံး အစိတ်အပိုင်း */
   .song-lyrics {
     background: #000;
     color: #4ade80;
@@ -46,15 +24,7 @@
     line-height: 1.8;
     height: auto; /* ← အရှည်အကုန်ပေါ်အောင် */
   }
-  .back-btn {
-    background: #333;
-    color: #fff;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    cursor: pointer;
-  }
+  .back-btn { background: #333; color: #fff; padding: 8px 15px; border: none; border-radius: 5px; margin-bottom: 15px; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -64,16 +34,17 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "phyowailin-guitar", // ← မင်းရဲ့ project ID ထည့်
-    storageBucket: "YOUR_BUCKET",
-    messagingSenderId: "YOUR_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
+    authDomain: "phyowailin-guitar.firebaseapp.com",
+    projectId: "phyowailin-guitar",
+    storageBucket: "phyowailin-guitar.firebasestorage.app",
+    messagingSenderId: "402954240690",
+    appId: "1:402954240690:web:953982abfcb3866c9cffab",
+    measurementId: "G-CCLP6CKXZL"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -93,6 +64,8 @@
         <div class="song-info">Key: ${data.key} | BPM: ${data.bpm}</div>
         <div class="song-lyrics">${data.lyrics}</div>
       `;
+    } else {
+      document.getElementById('song-detail').innerHTML = "Song not found";
     }
   }
   loadSong();
