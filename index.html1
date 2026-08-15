@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phyo Wai Lin Guitar</title>
+<style>
+  body { background: #111; color: #eee; font-family: 'Noto Sans Myanmar', sans-serif; margin: 0; padding: 20px; }
+  .container { max-width: 800px; margin: 0 auto; background: #1a1a1a; padding: 20px; border-radius: 10px; }
+  .song-title { font-size: 24px; font-weight: bold; margin-bottom: 5px; color: #f39c12; }
+  .song-info { color: #aaa; margin-bottom: 15px; }
+  .song-lyrics {
+    background: #000;
+    color: #4ade80;
+    font-family: monospace;
+    white-space: pre-wrap; /* ← ဒါကြောင့် အဆုံးအထိပေါ်မယ် */
+    word-break: break-word;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.8;
+    height: auto;
+  }
+  .back-btn { background: #333; color: #fff; padding: 8px 15px; border: none; border-radius: 5px; margin-bottom: 15px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="container">
+  <button class="back-btn" onclick="history.back()">← Back to Catalog</button>
+  <div id="song-detail">Loading...</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
+    authDomain: "phyowailin-guitar.firebaseapp.com",
+    projectId: "phyowailin-guitar",
+    storageBucket: "phyowailin-guitar.firebasestorage.app",
+    messagingSenderId: "402954240690",
+    appId: "1:402954240690:web:953982abfcb3866c9cffab",
+    measurementId: "G-CCLP6CKXZL"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const songId = new URLSearchParams(window.location.search).get('id');
+
+  async function loadSong() {
+    const docSnap = await getDoc(doc(db, "songs", songId));
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      document.getElementById('song-detail').innerHTML = `
+        <div class="song-title">${data.title}</div>
+        <div class="song-info">Key: ${data.key} | BPM: ${data.bpm}</div>
+        <div class="song-lyrics">${data.lyrics}</div>
+      `;
+    } else {
+      document.getElementById('song-detail').innerHTML = "Song not found";
+    }
+  }
+  loadSong();
+</script>
+</body>
+</html>
