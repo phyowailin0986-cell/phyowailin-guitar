@@ -1,135 +1,101 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phyo Wai Lin Guitar - Official Catalog</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-    body { background: #121212; color: #fff; padding: 20px; }
-    header { text-align: center; padding: 20px 0; border-bottom: 1px solid #333; }
-    h1 { color: #f39c12; margin-bottom: 10px; }
-    input[type="text"] { width: 100%; max-width: 400px; padding: 10px; border-radius: 5px; border: none; margin-top: 10px; }
-    .song-list { display: grid; gap: 15px; margin-top: 20px; }
-    .song-card { background: #1e1e1e; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12; cursor: pointer; }
-    .song-card:hover { background: #2a2a2a; }
-    .song-title { font-size: 1.2rem; font-weight: bold; color: #fff; }
-    .song-meta { font-size: 0.85rem; color: #aaa; margin: 5px 0; }
-    .btn { display: inline-block; background: #f39c12; color: #000; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-top: 8px; font-size: 0.85rem; }
-    #detail-view { display: none; background: #1e1e1e; padding: 20px; border-radius: 8px; margin-top: 20px; }
-    .back-btn { background: #444; color: #fff; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 15px; }
-    .chords { font-family: monospace; white-space: pre-wrap; background: #000; padding: 15px; border-radius: 5px; color: #00ff66; margin-top: 15px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phyo Wai Lin Guitar</title>
+<style>
+  body {
+    background: #111;
+    color: #eee;
+    font-family: 'Noto Sans Myanmar', sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  h1 {
+    text-align: center;
+    color: #4ade80;
+  }
+  .song-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .song-info {
+    color: #aaa;
+    margin-bottom: 15px;
+  }
+  /* ← ဒီနေရာအရေးကြီးဆုံး */
+  .song-lyrics {
+    background: #000;
+    color: #4ade80;
+    font-family: monospace;
+    white-space: pre-wrap; /* ← pre ကနေ ဒီလိုပြောင်းထားပြီးသား */
+    word-break: break-word;
+    overflow-x: auto;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.8;
+    height: auto; /* ← အရှည်အကုန်ပေါ်အောင် */
+  }
+  .back-btn {
+    background: #333;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
+<div class="container">
+  <button class="back-btn" onclick="history.back()">← Back to Catalog</button>
+  <div id="song-detail"></div>
+</div>
 
-  <header>
-    <h1>🎸 PHYO WAI LIN GUITAR</h1>
-    <p>Official Songs & Chord Catalog</p>
-    <input type="text" id="searchInput" onkeyup="filterSongs()" placeholder="🔍 Search songs...">
-  </header>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  <main>
-    <div id="catalog-view" class="song-list">
-      <p id="loading-text">Loading songs from Firebase...</p>
-    </div>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "phyowailin-guitar", // ← မင်းရဲ့ project ID ထည့်
+    storageBucket: "YOUR_BUCKET",
+    messagingSenderId: "YOUR_ID",
+    appId: "YOUR_APP_ID"
+  };
 
-    <div id="detail-view">
-      <button class="back-btn" onclick="closeSong()">← Back to Catalog</button>
-      <h2 id="detail-title"></h2>
-      <p id="detail-meta" style="color: #aaa; margin: 5px 0;"></p>
-      <div class="chords" id="detail-lyrics"></div>
-      <br>
-      <a id="detail-yt" class="btn" style="background:#ff0000; color:#fff;" target="_blank">🎬 Watch on YouTube</a>
-    </div>
-  </main>
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  const urlParams = new URLSearchParams(window.location.search);
+  const songId = urlParams.get('id');
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
-      authDomain: "phyowailin-guitar.firebaseapp.com",
-      projectId: "phyowailin-guitar",
-      storageBucket: "phyowailin-guitar.firebasestorage.app",
-      messagingSenderId: "402954240690",
-      appId: "1:402954240690:web:953982abfcb3866c9cffab",
-      measurementId: "G-CCLP6CKXZL"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    let songsCache = [];
-
-    async function loadSongs() {
-      const catalogView = document.getElementById('catalog-view');
-      try {
-        const querySnapshot = await getDocs(collection(db, "songs"));
-        catalogView.innerHTML = '';
-        
-        if(querySnapshot.empty) {
-          catalogView.innerHTML = '<p>No songs found in database yet. Add songs using admin.html</p>';
-          return;
-        }
-
-        querySnapshot.forEach((doc) => {
-          const song = doc.data();
-          song.id = doc.id;
-          songsCache.push(song);
-
-          const card = document.createElement('div');
-          card.className = 'song-card';
-          card.onclick = () => openSong(song.id);
-          card.innerHTML = `
-            <div class="song-title">🎵 ${song.title}</div>
-            <div class="song-meta">Key: ${song.key || 'N/A'} | BPM: ${song.bpm || 'N/A'}</div>
-            <button class="btn">View Chords & Lyrics</button>
-          `;
-          catalogView.appendChild(card);
-        });
-      } catch (e) {
-        console.error("Error loading songs: ", e);
-        catalogView.innerHTML = '<p>Error loading data from Firebase.</p>';
-      }
+  async function loadSong() {
+    const docRef = doc(db, "songs", songId);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      document.getElementById('song-detail').innerHTML = `
+        <div class="song-title">${data.title}</div>
+        <div class="song-info">Key: ${data.key} | BPM: ${data.bpm}</div>
+        <div class="song-lyrics">${data.lyrics}</div>
+      `;
     }
-
-    window.openSong = function(id) {
-      const song = songsCache.find(s => s.id === id);
-      if (!song) return;
-
-      document.getElementById('detail-title').innerText = song.title;
-      document.getElementById('detail-meta').innerText = `Key: ${song.key || 'N/A'} | BPM: ${song.bpm || 'N/A'}`;
-      document.getElementById('detail-lyrics').innerText = song.lyrics || 'No lyrics/chords provided.';
-      
-      const ytBtn = document.getElementById('detail-yt');
-      if (song.youtubeUrl) {
-        ytBtn.href = song.youtubeUrl;
-        ytBtn.style.display = 'inline-block';
-      } else {
-        ytBtn.style.display = 'none';
-      }
-
-      document.getElementById('catalog-view').style.display = 'none';
-      document.getElementById('detail-view').style.display = 'block';
-    }
-
-    window.closeSong = function() {
-      document.getElementById('catalog-view').style.display = 'grid';
-      document.getElementById('detail-view').style.display = 'none';
-    }
-
-    window.filterSongs = function() {
-      let input = document.getElementById('searchInput').value.toLowerCase();
-      let cards = document.getElementsByClassName('song-card');
-      for (let card of cards) {
-        let text = card.innerText.toLowerCase();
-        card.style.display = text.includes(input) ? "block" : "none";
-      }
-    }
-
-    loadSongs();
-  </script>
+  }
+  loadSong();
+</script>
 </body>
 </html>
