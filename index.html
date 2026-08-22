@@ -2,85 +2,87 @@
 <html lang="my">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phyo Wai Lin Guitar Official</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phyo Wai Lin // Guitar</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
-body{background:#0f0f0f;color:#fff}
-.header{text-align:center;padding:30px 20px;background:linear-gradient(180deg,#1a1a1a,#0f0f0f);border-bottom:1px solid #222}
-h1{color:#f39c12;font-size:2.2rem;margin-bottom:10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:20px;max-width:1200px;margin:0 auto}
-.card{background:#1e1e1e;border-radius:16px;overflow:hidden;border:1px solid #2a2a2a;transition:0.3s}
-.card:hover{transform:translateY(-4px);border-color:#f39c12;box-shadow:0 10px 30px rgba(243,156,18,0.2)}
-.thumb{width:100%;aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.thumb img{width:100%;height:100%;object-fit:cover}
-.info{padding:16px}
-.title{color:#f39c12;font-weight:bold;font-size:1.15rem;margin-bottom:6px}
-.meta{color:#888;font-size:0.9rem}
-.btn{background:#f39c12;color:#000;padding:12px 24px;border-radius:25px;text-decoration:none;font-weight:bold;display:inline-block;margin:8px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Segoe UI,sans-serif}
+body{background:#eaf2ff;color:#1a2b4c}
+header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.9);backdrop-filter:blur(10px);display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #d0ddf5}
+header b{letter-spacing:1px}
+header a{margin-left:12px;color:#2a5bd7;text-decoration:none;font-size:13px;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:18px;max-width:1200px;margin:0 auto}
+.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,0.06);border:1px solid #d9e6ff}
+.embed{width:100%;aspect-ratio:16/9;background:#000}
+.embed iframe{width:100%;height:100%;border:0}
+.info{padding:12px 14px}
+.badge{display:inline-block;font-size:10px;letter-spacing:0.8px;background:#e6f0ff;color:#3a7bd5;border:1px solid #cfe0ff;padding:3px 8px;border-radius:20px;margin-bottom:6px;text-transform:uppercase}
+.title{font-weight:700;font-size:15px;margin:4px 0;color:#132a52}
+.sub{font-size:12px;color:#6b7ea3}
+.links{max-width:1200px;margin:30px auto;padding:0 18px}
+.links h2{font-family:Georgia,serif;font-weight:400;font-size:28px;margin-bottom:16px}
+.links h2 i{color:#2a7bd5}
+.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.link-grid a{background:#fff;border:1px solid #d9e6ff;padding:12px;border-radius:10px;text-decoration:none;color:#1a2b4c;font-size:13px;font-weight:600;display:flex;justify-content:space-between}
+footer{text-align:center;padding:18px;font-size:11px;color:#8aa0c5;border-top:1px solid #d9e6ff;margin-top:30px;background:#f4f8ff}
+#status{text-align:center;padding:10px;font-size:12px;color:#5a7ab5}
 </style>
 </head>
 <body>
-<div class="header">
-<h1>🎸 PHYO WAI LIN GUITAR OFFICIAL</h1>
-<p style="color:#aaa;margin:10px 0">Myanmar Guitar Chords & Songs</p>
-<a class="btn" href="admin.html">➕ Add New Song</a>
-<p id="count" style="margin-top:15px;color:#888">Loading Firebase...</p>
-</div>
+<header><b>PHYO WAI LIN // GUITAR</b><div><a href="#songs">Songs (9)</a><a href="#links">Links</a><a href="admin.html">Admin</a></div></header>
+<div id="status">Loading Firebase...</div>
 <div id="grid" class="grid"></div>
+<div id="links" class="links">
+<h2>Official Links — <i>light blue</i></h2>
+<div class="link-grid">
+<a href="https://www.youtube.com/@phyowailin.guitar" target="_blank">YouTube ↗</a>
+<a href="https://phyowailin.blogspot.com" target="_blank">Blogspot ↗</a>
+<a href="https://www.instagram.com/phyowailin.guitar" target="_blank">Instagram ↗</a>
+<a href="https://www.threads.net/@phyowailin_guitar" target="_blank">Threads ↗</a>
+<a href="https://www.tiktok.com/@phyowailin.guitar" target="_blank">TikTok ↗</a>
+<a href="https://www.facebook.com/phyowailin.guitar.official" target="_blank">Facebook Page ↗</a>
+<a href="#">Spotify ↗</a><a href="#">BandLab ↗</a><a href="#">LinkTree ↗</a><a href="#">X / Twitter ↗</a>
+<a href="https://github.com/phyowailin0986-cell" target="_blank">GitHub ↗</a><a href="#">Fiverr ↗</a><a href="#">Discord ↗</a>
+</div>
+</div>
+<footer>© 2026 Phyo Wai Lin Guitar • 💙 Light Blue Theme • 9 Videos • Admin inside (Admin or 5x logo) • Password: phyowai2026</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
-  authDomain: "phyowailin-guitar.firebaseapp.com",
-  projectId: "phyowailin-guitar",
-  storageBucket: "phyowailin-guitar.firebasestorage.app",
-  messagingSenderId: "402954240690",
-  appId: "1:402954240690:web:953982abfcb3866c9cffab"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-function extractId(url){
-  if(!url) return "";
-  url=url.trim();
-  if(/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
-  const m=url.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
-  return m?m[1]:"";
+const firebaseConfig = { apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo", authDomain: "phyowailin-guitar.firebaseapp.com", projectId: "phyowailin-guitar", storageBucket: "phyowailin-guitar.firebasestorage.app", messagingSenderId: "402954240690", appId: "1:402954240690:web:953982abfcb3866c9cffab" };
+const app = initializeApp(firebaseConfig); const db=getFirestore(app);
+function getId(u){ if(!u) return ""; u=u.trim(); if(/^[a-zA-Z0-9_-]{11}$/.test(u)) return u; const m=u.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/); return m?m[1]:""; }
+const fallback=[
+{title:"MOM'S PHONE CALL",sub:"အမေ့ဖုန်းသံလာ • Emotional",id:"YOUR_ID_1",badge:"ORIGINAL #3"},
+{title:"Worship Session",sub:"Latest worship session",id:"YOUR_ID_2",badge:"VIDEO • WORSHIP"},
+{title:"MAMA'S TRAIN (Myanmar Version)",sub:"PHYO WAI LIN",id:"YOUR_ID_3",badge:"VIDEO • ORIGINAL"},
+{title:"Mom's Number Still In My Phone",sub:"PHYO WAI LIN",id:"YOUR_ID_4",badge:"VIDEO • BLUES ROCK"},
+{title:"Mom's 37 Missed Calls",sub:"PHYO WAI LIN",id:"YOUR_ID_5",badge:"VIDEO • STORY"},
+{title:"Mom You Are My Sunshine",sub:"PHYO WAI LIN",id:"YOUR_ID_6",badge:"SHORT"},
+{title:"Mom wait for me just a moment",sub:"PHYO WAI LIN",id:"YOUR_ID_7",badge:"SHORT"},
+{title:"One More Mile Of Mercy - FINALE",sub:"Original Performance",id:"rf-w2POClHE",badge:"ORIGINAL • FINALE"},
+{title:"BOOTS FULL OF DUST",sub:"Blues Rock Live",id:"FD5YVFMpKDo",badge:"BLUES ROCK"}
+];
+async function render(songs){
+  const grid=document.getElementById('grid'); let html="";
+  songs.forEach(s=>{
+    const yId=s.youtubeId||getId(s.youtubeUrl)||s.id;
+    html+=`<div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/${yId}?rel=0" allowfullscreen loading="lazy"></iframe></div><div class="info"><span class="badge">${s.badge||s.key||"VIDEO"}</span><div class="title">${s.title}</div><div class="sub">${s.sub||s.key||""} • ${s.bpm||""}</div></div></div>`;
+  });
+  grid.innerHTML=html;
 }
-
 async function load(){
-  const grid=document.getElementById('grid');
-  const count=document.getElementById('count');
+  const status=document.getElementById('status');
   try{
-    const q=query(collection(db,"songs"),orderBy("createdAt","desc"));
+    const q=query(collection(db,"songs"),orderBy("order","desc"));
     const snap=await getDocs(q);
-    if(snap.empty){
-      grid.innerHTML="<p style='text-align:center;padding:40px;color:#888'>သီချင်းမရှိသေးဘူး - Admin မှာ စထည့်ပါ!</p>";
-      count.innerText="Songs (0)";
-      return;
-    }
-    let html=""; let c=0;
-    snap.forEach(d=>{
-      const s=d.data();
-      const yId=extractId(s.youtubeId||s.youtubeUrl||"");
-      const thumb=yId?`https://img.youtube.com/vi/${yId}/hqdefault.jpg`:"";
-      html+=`<div class="card">
-        <div class="thumb">${thumb?`<img src="${thumb}" loading="lazy" onerror="this.parentElement.innerHTML='🎸'">`:`<span style="font-size:40px">🎸</span>`}</div>
-        <div class="info">
-          <div class="title">${s.title||"Untitled"}</div>
-          <div class="meta">Key: ${s.key||"-"} | BPM: ${s.bpm||"-"}</div>
-          <div style="margin-top:10px">${yId?`<a href="https://youtu.be/${yId}" target="_blank" style="color:#f39c12;text-decoration:none">▶️ YouTube မှာ ကြည့်</a>`:""}</div>
-        </div>
-      </div>`;
-      c++;
-    });
-    grid.innerHTML=html;
-    count.innerText=`Songs (${c}) - Firebase Connected ✅`;
+    if(snap.empty) throw new Error("empty");
+    const list=[]; snap.forEach(d=>{ const v=d.data(); list.push({title:v.title,sub:v.lyrics?.slice(0,30)||"",youtubeId:v.youtubeId,youtubeUrl:v.youtubeUrl,key:v.key,bpm:v.bpm,badge:v.key||"ORIGINAL"}) });
+    status.innerText=`Firebase Connected ✅ - Songs (${list.length})`;
+    render(list);
   }catch(e){
-    grid.innerHTML=`<p style='color:#e74c3c;text-align:center;padding:20px'>Error: ${e.message}<br>Firestore Rules မှာ allow read: if true; လုပ်ထားလား စစ်ပါ!</p>`;
+    status.innerText=`Offline Mode - Showing 9 Original Videos (Firebase: ${e.message})`;
+    render(fallback);
   }
 }
 load();
