@@ -1,163 +1,105 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Phyo Wai Lin Guitar</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-    body { background: #121212; color: #fff; padding: 20px; max-width: 700px; margin: auto; }
-    h1 { color: #f39c12; margin-bottom: 20px; text-align: center; font-size: 1.8rem; }
-   .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; color: #aaa; font-weight: bold; }
-    input, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1e1e1e; color: #fff; font-size: 1rem; }
-    textarea { height: 180px; font-family: monospace; line-height: 1.5; }
-    button { width: 100%; padding: 14px; background: #f39c12; border: none; border-radius: 8px; color: #000; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 10px; transition: 0.3s; }
-    button:hover { background: #e67e22; }
-    #status, #bulkStatus { margin-top: 15px; text-align: center; font-weight: bold; min-height: 20px; }
-    hr { margin:30px 0; border: none; border-top: 1px solid #333; }
-   .note { background: #1e1e1e; padding: 10px; border-radius: 5px; font-size: 0.9rem; color: #ccc; margin-bottom: 15px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phyo Wai Lin Guitar Official</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
+body{background:#0f0f0f;color:#fff;padding:20px}
+h1{color:#f39c12;text-align:center;margin:20px 0;font-size:2rem}
+.header{text-align:center;padding:20px 0;border-bottom:1px solid #222;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;max-width:1200px;margin:0 auto}
+.card{background:#1e1e1e;border-radius:12px;overflow:hidden;border:1px solid #333;transition:0.3s}
+.card:hover{transform:translateY(-5px);border-color:#f39c12}
+.thumb{width:100%;aspect-ratio:16/9;background:#000;position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.info{padding:15px}
+.title{font-weight:bold;font-size:1.1rem;margin-bottom:5px;color:#f39c12}
+.meta{color:#888;font-size:0.9rem}
+.loading{text-align:center;padding:40px;color:#888}
+.btn{display:inline-block;background:#f39c12;color:#000;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;margin:10px}
+.top{text-align:center;margin-bottom:20px}
+</style>
 </head>
 <body>
+<div class="header">
+<h1>🎸 PHYO WAI LIN GUITAR OFFICIAL</h1>
+<p style="color:#aaa">Myanmar Guitar Chords & Songs | 9+ Songs</p>
+<a class="btn" href="admin.html">➕ Add New Song</a>
+<p id="count" style="margin-top:10px;color:#888">Loading...</p>
+</div>
 
-  <h1>🎸 Add New Song - 1 ပုဒ်ချင်း</h1>
+<div id="songsGrid" class="grid">
+<p class="loading">⏳ Firebase ကနေ သီချင်းတွေ ဆွဲနေတယ်...</p>
+</div>
 
-  <form id="addSongForm">
-    <div class="form-group">
-      <label>Song Title</label>
-      <input type="text" id="title" placeholder="e.g. MAMA'S TRAIN" required>
-    </div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    <div class="form-group">
-      <label>Key</label>
-      <input type="text" id="key" placeholder="e.g. Em or G Major">
-    </div>
+const firebaseConfig = {
+  apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
+  authDomain: "phyowailin-guitar.firebaseapp.com",
+  projectId: "phyowailin-guitar",
+  storageBucket: "phyowailin-guitar.firebasestorage.app",
+  messagingSenderId: "402954240690",
+  appId: "1:402954240690:web:953982abfcb3866c9cffab"
+};
 
-    <div class="form-group">
-      <label>BPM / Tempo</label>
-      <input type="text" id="bpm" placeholder="e.g. 78">
-    </div>
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    <div class="form-group">
-      <label>YouTube URL</label>
-      <input type="url" id="youtubeUrl" placeholder="https://youtu.be/...">
-    </div>
+function getYouTubeId(url){
+  if(!url) return "";
+  if(url.length===11 &&!url.includes("/")) return url;
+  const reg = /(?:youtube\.com\/.*v=|youtu\.be\/|youtube\.com\/shorts\/)([^&\n?#]+)/;
+  const m = url.match(reg);
+  return m? m[1] : url;
+}
 
-    <div class="form-group">
-      <label>Chords & Lyrics</label>
-      <textarea id="lyrics" placeholder="[Intro]
-G C
-သီချင်းစာသား..."></textarea>
-    </div>
+async function loadSongs(){
+  const grid = document.getElementById('songsGrid');
+  const countEl = document.getElementById('count');
+  try{
+    const q = query(collection(db, "songs"), orderBy("createdAt","desc"));
+    const snap = await getDocs(q);
 
-    <button type="submit">🚀 Save to Firebase Database</button>
-  </form>
-
-  <p id="status"></p>
-
-  <hr>
-
-  <h1>📋 Bulk Add - အများကြီးတစ်ခါတည်း</h1>
-  <div class="note">
-    <b>Format:</b> Title | Key | BPM | YouTube | Lyrics <br>
-    Line တစ်ခုကို သီချင်းတစ်ပုဒ်ဖြစ်မယ်။ `|` နဲ့ခွဲပေးပါ
-  </div>
-
-  <div class="form-group">
-    <textarea id="bulkInput" rows="12" placeholder="ဥပမာ:
-မေတ္တာရဲ့သံသရာ | C | 78 | https://youtu.be/xxx | [Verse]
-C G
-ချစ်လို့မဝ...
-နောက်တစ်ပုဒ် | G | 90 | | [Chorus]
-Em C G D"></textarea>
-  </div>
-
-  <button type="button" onclick="bulkAdd()">🚀 တစ်ခါတည်းထည့်မယ်</button>
-  <p id="bulkStatus"></p>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
-      authDomain: "phyowailin-guitar.firebaseapp.com",
-      projectId: "phyowailin-guitar",
-      storageBucket: "phyowailin-guitar.firebasestorage.app",
-      messagingSenderId: "402954240690",
-      appId: "1:402954240690:web:953982abfcb3866c9cffab",
-      measurementId: "G-CCLP6CKXZL"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const form = document.getElementById('addSongForm');
-    const status = document.getElementById('status');
-    const bulkStatus = document.getElementById('bulkStatus');
-
-    // 1 ပုဒ်ချင်းထည့်တာ
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      status.innerText = "Saving to database...";
-      status.style.color = "#f39c12";
-
-      const newSong = {
-        title: document.getElementById('title').value,
-        key: document.getElementById('key').value,
-        bpm: document.getElementById('bpm').value,
-        youtubeUrl: document.getElementById('youtubeUrl').value,
-        lyrics: document.getElementById('lyrics').value,
-        createdAt: new Date()
-      };
-
-      try {
-        await addDoc(collection(db, "songs"), newSong);
-        status.innerText = "✅ Song added successfully!";
-        status.style.color = "#2ecc71";
-        form.reset();
-      } catch (error) {
-        console.error("Error adding song: ", error);
-        status.innerText = "❌ Error adding song. Check Firebase setup.";
-        status.style.color = "#e74c3c";
-      }
-    });
-
-    // Bulk Add Function
-    window.bulkAdd = async () => {
-      const lines = document.getElementById('bulkInput').value.trim().split('\n');
-      let count = 0;
-      bulkStatus.innerText = "Saving... 0%";
-      bulkStatus.style.color = "#f39c12";
-
-      for(const line of lines){
-        if(line.trim() == '' || line.startsWith('ဥပမာ')) continue;
-        const parts = line.split('|');
-        if(parts.length < 5) continue;
-
-        const newSong = {
-          title: parts[0].trim(),
-          key: parts[1].trim(),
-          bpm: parts[2].trim(),
-          youtubeUrl: parts[3].trim(),
-          lyrics: parts[4].trim(),
-          createdAt: new Date()
-        };
-
-        try {
-          await addDoc(collection(db, "songs"), newSong);
-          count++;
-          bulkStatus.innerText = `Saving... ${count} ပုဒ်`;
-        } catch (error) {
-          console.error("Error: ", error);
-        }
-      }
-
-      bulkStatus.innerText = `✅ ${count} ပုဒ်ထည့်ပြီးပါပြီ!`;
-      bulkStatus.style.color = "#2ecc71";
-      document.getElementById('bulkInput').value = '';
+    if(snap.empty){
+      grid.innerHTML = "<p class='loading'>သီချင်းမရှိသေးဘူး - Admin မှာ စထည့်ပါ!</p>";
+      countEl.innerText = "Songs (0)";
+      return;
     }
-  </script>
+
+    let html = "";
+    let count = 0;
+    snap.forEach(doc=>{
+      const s = doc.data();
+      const yId = s.youtubeId || getYouTubeId(s.youtubeUrl);
+      const thumb = yId? `https://img.youtube.com/vi/${yId}/hqdefault.jpg` : "";
+      html += `
+      <div class="card">
+        <div class="thumb">
+          ${thumb? `<img src="${thumb}" loading="lazy">` : `<div style="padding:40px;text-align:center">🎸</div>`}
+        </div>
+        <div class="info">
+          <div class="title">${s.title || "Untitled"}</div>
+          <div class="meta">${s.key? "Key: "+s.key+" | " : ""}${s.bpm? "BPM: "+s.bpm : ""}</div>
+          <div class="meta" style="margin-top:8px">
+            ${yId? `<a href="https://youtu.be/${yId}" target="_blank" style="color:#f39c12">▶️ Watch on YouTube</a>` : ""}
+          </div>
+        </div>
+      </div>`;
+      count++;
+    });
+    grid.innerHTML = html;
+    countEl.innerText = `Songs (${count}) - Firebase Connected ✅`;
+  }catch(err){
+    console.error(err);
+    grid.innerHTML = `<p class='loading' style="color:#e74c3c">❌ Error: ${err.message}<br>Firestore Rules ကို Allow လုပ်ထားလား စစ်ပါ!</p>`;
+  }
+}
+loadSongs();
+</script>
 </body>
 </html>
