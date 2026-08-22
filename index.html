@@ -6,38 +6,32 @@
 <title>Phyo Wai Lin Guitar Official</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
-body{background:#0f0f0f;color:#fff;padding:20px}
-h1{color:#f39c12;text-align:center;margin:20px 0;font-size:2rem}
-.header{text-align:center;padding:20px 0;border-bottom:1px solid #222;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;max-width:1200px;margin:0 auto}
-.card{background:#1e1e1e;border-radius:12px;overflow:hidden;border:1px solid #333;transition:0.3s}
-.card:hover{transform:translateY(-5px);border-color:#f39c12}
-.thumb{width:100%;aspect-ratio:16/9;background:#000;position:relative}
+body{background:#0f0f0f;color:#fff}
+.header{text-align:center;padding:30px 20px;background:linear-gradient(180deg,#1a1a1a,#0f0f0f);border-bottom:1px solid #222}
+h1{color:#f39c12;font-size:2.2rem;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:20px;max-width:1200px;margin:0 auto}
+.card{background:#1e1e1e;border-radius:16px;overflow:hidden;border:1px solid #2a2a2a;transition:0.3s}
+.card:hover{transform:translateY(-4px);border-color:#f39c12;box-shadow:0 10px 30px rgba(243,156,18,0.2)}
+.thumb{width:100%;aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .thumb img{width:100%;height:100%;object-fit:cover}
-.info{padding:15px}
-.title{font-weight:bold;font-size:1.1rem;margin-bottom:5px;color:#f39c12}
+.info{padding:16px}
+.title{color:#f39c12;font-weight:bold;font-size:1.15rem;margin-bottom:6px}
 .meta{color:#888;font-size:0.9rem}
-.loading{text-align:center;padding:40px;color:#888}
-.btn{display:inline-block;background:#f39c12;color:#000;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;margin:10px}
-.top{text-align:center;margin-bottom:20px}
+.btn{background:#f39c12;color:#000;padding:12px 24px;border-radius:25px;text-decoration:none;font-weight:bold;display:inline-block;margin:8px}
 </style>
 </head>
 <body>
 <div class="header">
 <h1>🎸 PHYO WAI LIN GUITAR OFFICIAL</h1>
-<p style="color:#aaa">Myanmar Guitar Chords & Songs | 9+ Songs</p>
+<p style="color:#aaa;margin:10px 0">Myanmar Guitar Chords & Songs</p>
 <a class="btn" href="admin.html">➕ Add New Song</a>
-<p id="count" style="margin-top:10px;color:#888">Loading...</p>
+<p id="count" style="margin-top:15px;color:#888">Loading Firebase...</p>
 </div>
-
-<div id="songsGrid" class="grid">
-<p class="loading">⏳ Firebase ကနေ သီချင်းတွေ ဆွဲနေတယ်...</p>
-</div>
+<div id="grid" class="grid"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
   authDomain: "phyowailin-guitar.firebaseapp.com",
@@ -46,60 +40,50 @@ const firebaseConfig = {
   messagingSenderId: "402954240690",
   appId: "1:402954240690:web:953982abfcb3866c9cffab"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-function getYouTubeId(url){
+function extractId(url){
   if(!url) return "";
-  if(url.length===11 &&!url.includes("/")) return url;
-  const reg = /(?:youtube\.com\/.*v=|youtu\.be\/|youtube\.com\/shorts\/)([^&\n?#]+)/;
-  const m = url.match(reg);
-  return m? m[1] : url;
+  url=url.trim();
+  if(/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+  const m=url.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
+  return m?m[1]:"";
 }
 
-async function loadSongs(){
-  const grid = document.getElementById('songsGrid');
-  const countEl = document.getElementById('count');
+async function load(){
+  const grid=document.getElementById('grid');
+  const count=document.getElementById('count');
   try{
-    const q = query(collection(db, "songs"), orderBy("createdAt","desc"));
-    const snap = await getDocs(q);
-
+    const q=query(collection(db,"songs"),orderBy("createdAt","desc"));
+    const snap=await getDocs(q);
     if(snap.empty){
-      grid.innerHTML = "<p class='loading'>သီချင်းမရှိသေးဘူး - Admin မှာ စထည့်ပါ!</p>";
-      countEl.innerText = "Songs (0)";
+      grid.innerHTML="<p style='text-align:center;padding:40px;color:#888'>သီချင်းမရှိသေးဘူး - Admin မှာ စထည့်ပါ!</p>";
+      count.innerText="Songs (0)";
       return;
     }
-
-    let html = "";
-    let count = 0;
-    snap.forEach(doc=>{
-      const s = doc.data();
-      const yId = s.youtubeId || getYouTubeId(s.youtubeUrl);
-      const thumb = yId? `https://img.youtube.com/vi/${yId}/hqdefault.jpg` : "";
-      html += `
-      <div class="card">
-        <div class="thumb">
-          ${thumb? `<img src="${thumb}" loading="lazy">` : `<div style="padding:40px;text-align:center">🎸</div>`}
-        </div>
+    let html=""; let c=0;
+    snap.forEach(d=>{
+      const s=d.data();
+      const yId=extractId(s.youtubeId||s.youtubeUrl||"");
+      const thumb=yId?`https://img.youtube.com/vi/${yId}/hqdefault.jpg`:"";
+      html+=`<div class="card">
+        <div class="thumb">${thumb?`<img src="${thumb}" loading="lazy" onerror="this.parentElement.innerHTML='🎸'">`:`<span style="font-size:40px">🎸</span>`}</div>
         <div class="info">
-          <div class="title">${s.title || "Untitled"}</div>
-          <div class="meta">${s.key? "Key: "+s.key+" | " : ""}${s.bpm? "BPM: "+s.bpm : ""}</div>
-          <div class="meta" style="margin-top:8px">
-            ${yId? `<a href="https://youtu.be/${yId}" target="_blank" style="color:#f39c12">▶️ Watch on YouTube</a>` : ""}
-          </div>
+          <div class="title">${s.title||"Untitled"}</div>
+          <div class="meta">Key: ${s.key||"-"} | BPM: ${s.bpm||"-"}</div>
+          <div style="margin-top:10px">${yId?`<a href="https://youtu.be/${yId}" target="_blank" style="color:#f39c12;text-decoration:none">▶️ YouTube မှာ ကြည့်</a>`:""}</div>
         </div>
       </div>`;
-      count++;
+      c++;
     });
-    grid.innerHTML = html;
-    countEl.innerText = `Songs (${count}) - Firebase Connected ✅`;
-  }catch(err){
-    console.error(err);
-    grid.innerHTML = `<p class='loading' style="color:#e74c3c">❌ Error: ${err.message}<br>Firestore Rules ကို Allow လုပ်ထားလား စစ်ပါ!</p>`;
+    grid.innerHTML=html;
+    count.innerText=`Songs (${c}) - Firebase Connected ✅`;
+  }catch(e){
+    grid.innerHTML=`<p style='color:#e74c3c;text-align:center;padding:20px'>Error: ${e.message}<br>Firestore Rules မှာ allow read: if true; လုပ်ထားလား စစ်ပါ!</p>`;
   }
 }
-loadSongs();
+load();
 </script>
 </body>
 </html>
