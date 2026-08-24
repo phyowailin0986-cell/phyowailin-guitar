@@ -3,41 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard - Phyo Wai Lin Guitar</title>
+<title>Admin Dashboard - Phyo Wai Lin Guitar - FIXED</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
 body{background:#121212;color:#fff;padding:20px;max-width:700px;margin:auto}
-h1{color:#f39c12;margin-bottom:20px;text-align:center;font-size:1.8rem}
+h1{color:#f39c12;margin-bottom:10px;text-align:center;font-size:1.8rem}
+.sub{text-align:center;color:#888;margin-bottom:20px;font-size:12px}
 .form-group{margin-bottom:15px}
-label{display:block;margin-bottom:5px;color:#aaa;font-weight:bold}
-input,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#1e1e1e;color:#fff;font-size:1rem}
-textarea{height:180px;font-family:monospace;line-height:1.5}
-button{width:100%;padding:14px;background:#f39c12;border:none;border-radius:8px;color:#000;font-weight:bold;cursor:pointer;font-size:1.1rem;margin-top:10px;transition:0.3s}
+label{display:block;margin-bottom:5px;color:#f39c12;font-weight:bold;font-size:13px}
+input,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#1e1e1e;color:#fff;font-size:14px}
+input:focus,textarea:focus{border-color:#f39c12;outline:none}
+textarea{height:120px;font-family:monospace;line-height:1.5}
+button{width:100%;padding:14px;background:#f39c12;border:none;border-radius:8px;color:#000;font-weight:bold;cursor:pointer;font-size:1.1rem;margin-top:10px}
 button:hover{background:#e67e22}
-#status,#bulkStatus{margin-top:15px;text-align:center;font-weight:bold;min-height:20px}
+#status,#bulkStatus{margin-top:15px;text-align:center;font-weight:bold;min-height:20px;font-size:13px}
 hr{margin:30px 0;border:none;border-top:1px solid #333}
-.note{background:#1e1e1e;padding:10px;border-radius:5px;font-size:0.9rem;color:#ccc;margin-bottom:15px}
+.note{background:#1e1e1e;padding:10px;border-radius:5px;font-size:12px;color:#ccc;margin-bottom:15px;border-left:3px solid #f39c12}
+.preview{width:100%;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;margin-top:10px;display:none;border:1px solid #333}
+.preview iframe{width:100%;height:100%;border:0}
+.fixBox{background:#001a00;border:1px solid #00ff88;padding:8px;border-radius:5px;font-size:11px;margin-top:8px;display:none;color:#00ff88}
 </style>
 </head>
 <body>
 
-<h1>🎸 Add New Song - Fixed ✅</h1>
-<p style="text-align:center;color:#888;margin-bottom:20px">Firebase Connected - Auto Thumbnail</p>
+<h1>🎸 Add New Song - FIXED ✅</h1>
+<p class="sub">Firebase Connected - Playlist Supported - No More Broken URLs</p>
 
 <form id="addSongForm">
-<div class="form-group"><label>Song Title *</label><input type="text" id="title" placeholder="One More Mile Of Mercy - FINALE" required></div>
-<div class="form-group"><label>Key</label><input type="text" id="key" placeholder="Am"></div>
-<div class="form-group"><label>BPM / Tempo</label><input type="text" id="bpm" placeholder="75"></div>
-<div class="form-group"><label>YouTube URL *</label><input type="url" id="youtubeUrl" placeholder="https://youtu.be/rf-w2POClHE" required></div>
-<div class="form-group"><label>Chords & Lyrics</label><textarea id="lyrics" placeholder="[Verse] Am G..."></textarea></div>
+<div class="form-group"><label>Song Title *</label><input type="text" id="title" placeholder="DESERT SESSIONS - One More Mile Of Mercy" required></div>
+<div class="form-group"><label>Key</label><input type="text" id="key" placeholder="Am" value="Am"></div>
+<div class="form-group"><label>BPM / Tempo</label><input type="text" id="bpm" placeholder="75" value="75"></div>
+<div class="form-group"><label>YouTube URL * (Video or Playlist)</label>
+<input type="text" id="youtubeUrl" placeholder="https://youtu.be/rf-w2POClHE or https://youtube.com/playlist?list=PLHD-8nVDKUXQ" required>
+<div class="fixBox" id="fixBox"></div>
+<div class="preview" id="preview"><iframe id="previewFrame" allowfullscreen></iframe></div>
+</div>
+<div class="form-group"><label>Chords & Lyrics</label><textarea id="lyrics" placeholder="[Verse] Am G...&#10;From dust to grace..."></textarea></div>
 <button type="submit">🚀 Save to Firebase</button>
 </form>
 <p id="status"></p>
+
 <hr>
-<h1>📋 Bulk Add</h1>
-<div class="note"><b>Format:</b> Title | Key | BPM | YouTube | Lyrics</div>
-<div class="form-group"><textarea id="bulkInput" rows="12" placeholder="One More Mile Of Mercy - FINALE | Am | 75 | https://youtu.be/rf-w2POClHE | [Verse]..."></textarea></div>
-<button type="button" onclick="bulkAdd()">🚀 တစ်ခါတည်းထည့်မယ်</button>
+<h1>📋 Bulk Add - FIXED</h1>
+<div class="note"><b>Format:</b> Title | Key | BPM | YouTube | Lyrics<br>Now supports Playlist URLs and auto-fixes broken links!</div>
+<div class="form-group"><textarea id="bulkInput" rows="10" placeholder="DESERT SESSIONS - One More Mile Of Mercy | Am | 78 | https://youtube.com/playlist?list=PLHD-8nVDKUXQ | From dust to grace - 8 videos&#10;One More Mile Of Mercy - FINALE | Am | 75 | https://youtu.be/rf-w2POClHE | [Verse]...&#10;Dust is on my Bible | Am | 78 | https://youtu.be/pYgQ8YUcg3E | Original"></textarea></div>
+<button type="button" onclick="bulkAdd()">🚀 တစ်ခါတည်းထည့်မယ် - Auto Fix</button>
 <p id="bulkStatus"></p>
 
 <script type="module">
@@ -56,38 +66,87 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-function getYouTubeId(url){
+// FIX: Clean URL - removes spaces, newlines, tracking
+function cleanUrl(url){
   if(!url) return "";
-  url=url.trim();
-  if(/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
-  const m=url.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
-  return m?m[1]:"";
+  let c = url.replace(/\s+/g,'').replace(/\n/g,'').replace(/\r/g,'').trim();
+  c = c.split('&si=')[0].split('?si=')[0].split('&si=')[0];
+  return c;
+}
+
+// FIX: Support both Video and Playlist
+function getYouTubeInfo(url){
+  if(!url) return {type:"", id:"", embed:""};
+  let clean = cleanUrl(url);
+  if(clean.includes('list=')){
+    let listId = clean.split('list=')[1].split('&')[0].split('?')[0];
+    return {type:"playlist", id:listId, embed:`https://www.youtube.com/embed/videoseries?list=${listId}`, clean:clean};
+  }
+  if(/^[a-zA-Z0-9_-]{11}$/.test(clean)) {
+    return {type:"video", id:clean, embed:`https://www.youtube.com/embed/${clean}`, clean:clean};
+  }
+  let m = clean.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
+  let vid = m? m[1] : "";
+  if(vid){
+    return {type:"video", id:vid, embed:`https://www.youtube.com/embed/${vid}`, clean:clean};
+  }
+  return {type:"", id:"", embed:"", clean:clean};
 }
 
 const form=document.getElementById('addSongForm');
 const status=document.getElementById('status');
 const bulkStatus=document.getElementById('bulkStatus');
+const ytInput=document.getElementById('youtubeUrl');
+const fixBox=document.getElementById('fixBox');
+const preview=document.getElementById('preview');
+const previewFrame=document.getElementById('previewFrame');
+
+// Live preview and auto fix
+ytInput.addEventListener('input', ()=>{
+  let raw = ytInput.value;
+  let info = getYouTubeInfo(raw);
+  if(raw && info.clean!== raw){
+    fixBox.style.display='block';
+    fixBox.innerHTML=`🔧 Fixed: <span style="text-decoration:line-through;color:#888">${raw}</span><br>✅ ${info.clean}`;
+  } else {
+    fixBox.style.display='none';
+  }
+  if(info.embed){
+    preview.style.display='block';
+    previewFrame.src=info.embed;
+  } else {
+    preview.style.display='none';
+  }
+});
 
 form.addEventListener('submit', async (e)=>{
   e.preventDefault();
   status.innerText="Saving..."; status.style.color="#f39c12";
-  const rawUrl=document.getElementById('youtubeUrl').value.trim();
-  const yId=getYouTubeId(rawUrl);
+  let rawUrl=document.getElementById('youtubeUrl').value.trim();
+  let info=getYouTubeInfo(rawUrl);
+  if(!info.id){
+    status.innerText="❌ Invalid YouTube URL"; status.style.color="#e74c3c";
+    return;
+  }
   const newSong={
     title:document.getElementById('title').value.trim(),
     key:document.getElementById('key').value.trim(),
     bpm:document.getElementById('bpm').value.trim(),
-    youtubeUrl:rawUrl,
-    youtubeId:yId,
+    youtubeUrl:info.clean,
+    youtubeId:info.id,
+    youtubeType:info.type,
+    embedUrl:info.embed,
     lyrics:document.getElementById('lyrics').value.trim(),
     createdAt:new Date(),
     order:Date.now()
   };
   try{
     await addDoc(collection(db,"songs"),newSong);
-    status.innerText=`✅ Saved! Thumbnail: ${yId?"OK":"⚠️ Check URL"}`;
+    status.innerText=`✅ Saved! ${info.type.toUpperCase()}: ${info.id} - Thumbnail OK`;
     status.style.color="#2ecc71";
     form.reset();
+    preview.style.display='none';
+    fixBox.style.display='none';
   }catch(err){
     status.innerText="❌ Error: "+err.message;
     status.style.color="#e74c3c";
@@ -95,21 +154,42 @@ form.addEventListener('submit', async (e)=>{
 });
 
 window.bulkAdd=async()=>{
-  const lines=document.getElementById('bulkInput').value.trim().split('\n');
+  let text=document.getElementById('bulkInput').value;
+  if(!text.trim()){bulkStatus.innerText="❌ Paste songs first!"; bulkStatus.style.color="#e74c3c"; return;}
+
+  // Fix broken URLs across lines
+  let lines=text.split('\n');
+  let fixedLines=[];
+  let buf='';
+  for(let line of lines){
+    line=line.trim();
+    if(!line) continue;
+    if(buf &&!line.includes('|') && buf.includes('https://') && buf.lastIndexOf('https://') > buf.lastIndexOf('|')){
+      buf+=line;
+    } else {
+      if(buf) fixedLines.push(buf);
+      buf=line;
+    }
+  }
+  if(buf) fixedLines.push(buf);
+
   let count=0;
   bulkStatus.innerText="Saving..."; bulkStatus.style.color="#f39c12";
-  for(const line of lines){
-    if(line.trim()==''||line.startsWith('ဥပမာ')) continue;
+  for(const line of fixedLines){
+    if(line.trim()=='' ) continue;
     const parts=line.split('|');
     if(parts.length<4) continue;
-    const rawUrl=parts[3].trim();
-    const yId=getYouTubeId(rawUrl);
+    let rawUrl=cleanUrl(parts[3].trim());
+    let info=getYouTubeInfo(rawUrl);
+    if(!info.id) continue;
     const newSong={
       title:parts[0].trim(),
       key:parts[1].trim(),
       bpm:parts[2].trim(),
-      youtubeUrl:rawUrl,
-      youtubeId:yId,
+      youtubeUrl:info.clean,
+      youtubeId:info.id,
+      youtubeType:info.type,
+      embedUrl:info.embed,
       lyrics:(parts[4]||"").trim(),
       createdAt:new Date(),
       order:Date.now()+count
