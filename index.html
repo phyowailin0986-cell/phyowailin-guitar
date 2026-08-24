@@ -1,23 +1,58 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PHYO WAI LIN // GUITAR</title>
-<style>*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,sans-serif}body{background:#eaf2ff;color:#1a2b4c}header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.92);backdrop-filter:blur(12px);display:flex;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #d0ddf5} .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:18px;max-width:1200px;margin:0 auto} .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(42,91,215,0.08);border:1px solid #d9e6ff} .embed{width:100%;aspect-ratio:16/9;background:#000} .embed iframe{width:100%;height:100%;border:0} .info{padding:12px 14px} .badge{background:#e6f0ff;color:#3a7bd5;border:1px solid #cfe0ff;padding:4px 9px;border-radius:20px;font-size:10px;font-weight:700} .title{font-weight:800;font-size:14px;margin:6px 0} .sub{font-size:11px;color:#6b7ea3} .links{max-width:1200px;margin:28px auto;padding:0 18px} .link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px} .link-grid a{background:#fff;border:1px solid #d9e6ff;padding:12px;border-radius:10px;text-decoration:none;color:#1a2b4c;font-size:13px;font-weight:700}</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,sans-serif}
+body{background:#eaf2ff;color:#1a2b4c}
+header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.92);backdrop-filter:blur(12px);display:flex;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #d0ddf5;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:18px;max-width:1200px;margin:0 auto}
+.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(42,91,215,0.08);border:1px solid #d9e6ff;transition:0.3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(42,91,215,0.15)}
+.card.featured{border:2px solid #ff9500;grid-column:1/-1;max-width:600px;margin:0 auto;width:100%}
+.embed{width:100%;aspect-ratio:16/9;background:#000}
+.embed iframe{width:100%;height:100%;border:0}
+.info{padding:12px 14px}
+.badge{background:#e6f0ff;color:#3a7bd5;border:1px solid #cfe0ff;padding:4px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.badge.playlist{background:#fff3e0;color:#ff9500;border-color:#ffcc80}
+.title{font-weight:800;font-size:14px;margin:6px 0}
+.sub{font-size:11px;color:#6b7ea3}
+.links{max-width:1200px;margin:28px auto;padding:0 18px}
+.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}
+.link-grid a{background:#fff;border:1px solid #d9e6ff;padding:12px;border-radius:10px;text-decoration:none;color:#1a2b4c;font-size:13px;font-weight:700;transition:0.2s}
+.link-grid a:hover{background:#2a5bd7;color:#fff}
+</style>
 </head><body>
-<header><b>PHYO WAI LIN // GUITAR</b><div><span id="count">Songs (10)</span> <a href="#links">Links</a> <a href="admin.html">Admin</a></div></header>
-<div style="text-align:center;padding:10px;color:#2a5bd7;font-size:12px;font-weight:700">✅ Firebase Live - Songs (10) - From Google Doc</div>
+<header><b>PHYO WAI LIN // GUITAR</b><div><span id="count">Songs (11)</span> <a href="#links" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Links</a> <a href="admin.html" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Admin</a></div></header>
+<div style="text-align:center;padding:10px;color:#2a5bd7;font-size:12px;font-weight:700">✅ Firebase Live - Songs (11) - DESERT SESSIONS Playlist Added!</div>
+
 <div class="grid">
+
+<!-- FEATURED PLAYLIST CARD -->
+<div class="card featured"><div class="embed"><iframe src="https://www.youtube.com/embed/videoseries?list=PLHD-8nVDKUXQ" allowfullscreen></iframe></div><div class="info"><span class="badge playlist">PLAYLIST • DESERT SESSIONS • 8 VIDEOS</span><div class="title">DESERT SESSIONS - One More Mile Of Mercy (Full Playlist)</div><div class="sub">From dust to grace - Every verse from the Mojave Desert • 8 Videos • by PHYO WAI LIN • Key: Am • 78 BPM</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/pYgQ8YUcg3E" allowfullscreen></iframe></div><div class="info"><span class="badge">ORIGINAL • MAMA'S TRAIN</span><div class="title">MAMA'S TRAIN (English Version)</div><div class="sub">Key: Em • 78 BPM • Blues Rock Ballad</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/1oizvfa2idU" allowfullscreen></iframe></div><div class="info"><span class="badge">ORIGINAL • BOOTS FULL OF DUST</span><div class="title">BOOTS FULL OF DUST</div><div class="sub">Key: Am • 85 BPM • Desert Blues</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/fDA3mh519zk" allowfullscreen></iframe></div><div class="info"><span class="badge">ORIGINAL • MOM'S PHONE CALL</span><div class="title">MOM'S PHONE CALL</div><div class="sub">အမေ့ဖုန်းသံလာ</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/lqu80JQXeHs" allowfullscreen></iframe></div><div class="info"><span class="badge">VIDEO</span><div class="title">Latest Release 4</div><div class="sub">Phyo Wai Lin</div></div></div>
-<div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/rf-w2POClHE" allowfullscreen></iframe></div><div class="info"><span class="badge">ORIGINAL • FINALE</span><div class="title">One More Mile Of Mercy - FINALE</div><div class="sub">Desert Sessions</div></div></div>
+
+<div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/rf-w2POClHE" allowfullscreen></iframe></div><div class="info"><span class="badge">ORIGINAL • FINALE</span><div class="title">One More Mile Of Mercy - FINALE</div><div class="sub">Desert Sessions • Am • 75 BPM • From dust to grace</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/FOnVSzPqAR8" allowfullscreen></iframe></div><div class="info"><span class="badge">VIDEO</span><div class="title">Video 6</div><div class="sub">Phyo Wai Lin Guitar</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/QNk6ZgLWPbY" allowfullscreen></iframe></div><div class="info"><span class="badge">VIDEO</span><div class="title">Video 7 - QNk6ZgLWPbY</div><div class="sub">Official</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/jSo4T2Os2Hc" allowfullscreen></iframe></div><div class="info"><span class="badge">SHORT</span><div class="title">Short 1 - jSo4T2Os2Hc</div><div class="sub">YouTube Shorts</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/my1SMrnyjsY" allowfullscreen></iframe></div><div class="info"><span class="badge">SHORT</span><div class="title">Short 2 - my1SMrnyjsY</div><div class="sub">YouTube Shorts</div></div></div>
+
 <div class="card"><div class="embed"><iframe src="https://www.youtube.com/embed/rgFykqgKd3A" allowfullscreen></iframe></div><div class="info"><span class="badge">VIDEO</span><div class="title">Video 10</div><div class="sub">Phyo Wai Lin</div></div></div>
+
 </div>
-<div class="links"><h2>Official Links — <i style="color:#2a5bd7">light blue</i></h2><div class="link-grid">
+
+<div class="links" id="links"><h2>Official Links — <i style="color:#2a5bd7">light blue</i></h2><div class="link-grid">
 <a href="https://www.youtube.com/@Phyowailinguitar" target="_blank">YouTube ↗</a>
 <a href="https://phyowailin-guitar.blogspot.com/" target="_blank">Blogspot ↗</a>
 <a href="https://www.instagram.com/phyowailin.guitar" target="_blank">Instagram ↗</a>
@@ -32,5 +67,6 @@
 <a href="https://www.fiverr.com/pe/5r2Zej6" target="_blank">Fiverr ↗</a>
 <a href="https://discord.gg/gTFs3UrS" target="_blank">Discord ↗</a>
 </div></div>
-<footer style="text-align:center;padding:20px;font-size:11px;color:#8aa0c5">© 2026 Phyo Wai Lin Guitar • 💙 Light Blue Theme • 10 Videos • From Google Doc</footer>
+
+<footer style="text-align:center;padding:20px;font-size:11px;color:#8aa0c5">© 2026 Phyo Wai Lin Guitar • 💙 Light Blue Theme • 11 Videos • DESERT SESSIONS Playlist Added • From Google Doc + Firebase</footer>
 </body></html>
