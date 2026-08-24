@@ -1,0 +1,40 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Fix Embeds</title>
+<style>body{background:#121212;color:#fff;padding:20px;font-family:monospace}button{padding:14px;background:#f39c12;border:none;border-radius:8px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}</style>
+</head><body>
+<h2>🔧 Fix 39 Broken Embeds</h2><p id="status">Loading...</p>
+<button onclick="fixAll()">🚀 Fix All YouTube Links Now</button>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",authDomain:"phyowailin-guitar.firebaseapp.com",projectId:"phyowailin-guitar",storageBucket:"phyowailin-guitar.firebasestorage.app",messagingSenderId:"402954240690",appId:"1:402954240690:web:953982abfcb3866c9cffab"};
+const app=initializeApp(firebaseConfig);const db=getFirestore(app);
+function cleanUrl(u){return u?u.replace(/\s+/g,'').trim().split('&si=')[0]:"";}
+function getInfo(url){
+ if(!url) return null;
+ let c=cleanUrl(url);
+ if(c.includes('list=')){let id=c.split('list=')[1].split('&')[0];return{type:"playlist",id:id,embed:`https://www.youtube.com/embed/videoseries?list=${id}`}}
+ if(/^[a-zA-Z0-9_-]{11}$/.test(c)) return{type:"video",id:c,embed:`https://www.youtube.com/embed/${c}`};
+ let m=c.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
+ if(m) return{type:"video",id:m[1],embed:`https://www.youtube.com/embed/${m[1]}`};
+ return null;
+}
+window.fixAll=async()=>{
+ const status=document.getElementById('status');status.innerText="Fixing...";
+ const snap=await getDocs(collection(db,"songs"));let count=0;
+ for(let d of snap.docs){
+  let data=d.data();
+  let info=getInfo(data.youtubeUrl||data.youtubeId||"");
+  if(!info && data.youtubeId){
+    if(data.youtubeId.length>20 && data.youtubeId.includes("list=")){
+      let id=data.youtubeId.split("list=")[1].split("&")[0];info={type:"playlist",id:id,embed:`https://www.youtube.com/embed/videoseries?list=${id}`}
+    } else if(data.youtubeId.length==11){info={type:"video",id:data.youtubeId,embed:`https://www.youtube.com/embed/${data.youtubeId}`}}
+  }
+  if(info){
+    await updateDoc(doc(db,"songs",d.id),{youtubeId:info.id,youtubeType:info.type,embedUrl:info.embed,youtubeUrl:info.type=="playlist"?`https://www.youtube.com/playlist?list=${info.id}`:`https://youtu.be/${info.id}`});
+    count++;status.innerText=`Fixed ${count}/${snap.size} - ${data.title}`;
+  }
+ }
+ status.innerText=`✅ Fixed ${count} songs! Refresh main site now!`;
+}
+document.getElementById('status').innerText="Ready - Click Fix Button";
+</script></body></html>
