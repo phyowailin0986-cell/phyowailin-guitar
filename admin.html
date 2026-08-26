@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard - Phyo Wai Lin Guitar - FIXED</title>
+<title>Admin Dashboard - Phyo Wai Lin Guitar - FIXED V2</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
 body{background:#121212;color:#fff;padding:20px;max-width:700px;margin:auto}
@@ -25,35 +25,30 @@ hr{margin:30px 0;border:none;border-top:1px solid #333}
 </style>
 </head>
 <body>
-
-<h1>🎸 Add New Song - FIXED ✅</h1>
-<p class="sub">Firebase Connected - Playlist Supported - No More Broken URLs</p>
-
+<h1>🎸 Add New Song - FIXED V2 ✅</h1>
+<p class="sub">Firebase Connected - Thumbnail FIXED - Mama's Train Ready</p>
 <form id="addSongForm">
-<div class="form-group"><label>Song Title *</label><input type="text" id="title" placeholder="DESERT SESSIONS - One More Mile Of Mercy" required></div>
+<div class="form-group"><label>Song Title *</label><input type="text" id="title" placeholder="MAMA'S TRAIN EP3 - အိမ်နဲ့ဝေးတဲ့ သားတိုင်းအတွက်" required></div>
 <div class="form-group"><label>Key</label><input type="text" id="key" placeholder="Am" value="Am"></div>
 <div class="form-group"><label>BPM / Tempo</label><input type="text" id="bpm" placeholder="75" value="75"></div>
-<div class="form-group"><label>YouTube URL * (Video or Playlist)</label>
-<input type="text" id="youtubeUrl" placeholder="https://youtu.be/rf-w2POClHE or https://youtube.com/playlist?list=PLHD-8nVDKUXQ" required>
+<div class="form-group"><label>YouTube URL * (Video, Shorts, Playlist - All Supported)</label>
+<input type="text" id="youtubeUrl" placeholder="https://youtu.be/g70KMUZ3nck or https://youtube.com/shorts/IEWTM34zpCA" required>
 <div class="fixBox" id="fixBox"></div>
 <div class="preview" id="preview"><iframe id="previewFrame" allowfullscreen></iframe></div>
 </div>
-<div class="form-group"><label>Chords & Lyrics</label><textarea id="lyrics" placeholder="[Verse] Am G...&#10;From dust to grace..."></textarea></div>
-<button type="submit">🚀 Save to Firebase</button>
+<div class="form-group"><label>Chords & Lyrics / Description</label><textarea id="lyrics" placeholder="ပုလင်းတစ်လုံး စားပွဲပေါ် ပုံတစ်ပုံ နံရံပေါ်&#10;အိမ်နဲ့ဝေးတဲ့ သားတိုင်းအတွက် ဒီသီချင်းကို ဆိုတယ်"></textarea></div>
+<button type="submit">🚀 Save to Firebase - FIXED</button>
 </form>
 <p id="status"></p>
-
 <hr>
 <h1>📋 Bulk Add - FIXED</h1>
-<div class="note"><b>Format:</b> Title | Key | BPM | YouTube | Lyrics<br>Now supports Playlist URLs and auto-fixes broken links!</div>
-<div class="form-group"><textarea id="bulkInput" rows="10" placeholder="DESERT SESSIONS - One More Mile Of Mercy | Am | 78 | https://youtube.com/playlist?list=PLHD-8nVDKUXQ | From dust to grace - 8 videos&#10;One More Mile Of Mercy - FINALE | Am | 75 | https://youtu.be/rf-w2POClHE | [Verse]...&#10;Dust is on my Bible | Am | 78 | https://youtu.be/pYgQ8YUcg3E | Original"></textarea></div>
-<button type="button" onclick="bulkAdd()">🚀 တစ်ခါတည်းထည့်မယ် - Auto Fix</button>
+<div class="note"><b>Format:</b> Title | Key | BPM | YouTube | Lyrics<br>Supports Shorts: youtube.com/shorts/ID</div>
+<div class="form-group"><textarea id="bulkInput" rows="10" placeholder="MAMA'S TRAIN EP3 - Tears Version | Am | 75 | https://youtu.be/g70KMUZ3nck | အိမ်နဲ့ဝေးတဲ့ သားတိုင်းအတွက်&#10;MAMA'S TRAIN EP3 - Bottle Version | Am | 75 | https://youtu.be/DOtPRyzAZuc | ပုလင်းတစ်လုံး စားပွဲပေါ်&#10;MAMA'S TRAIN Guitar Lesson - 2nd Fret | Am | 80 | https://youtube.com/shorts/IEWTM34zpCA | Lesson"></textarea></div>
+<button type="button" onclick="bulkAdd()">🚀 တစ်ခါတည်းထည့်မယ်</button>
 <p id="bulkStatus"></p>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
   authDomain: "phyowailin-guitar.firebaseapp.com",
@@ -65,16 +60,12 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-// FIX: Clean URL - removes spaces, newlines, tracking
 function cleanUrl(url){
   if(!url) return "";
-  let c = url.replace(/\s+/g,'').replace(/\n/g,'').replace(/\r/g,'').trim();
-  c = c.split('&si=')[0].split('?si=')[0].split('&si=')[0];
+  let c = url.replace(/\s+/g,'').trim();
+  c = c.split('&si=')[0].split('?si=')[0];
   return c;
 }
-
-// FIX: Support both Video and Playlist
 function getYouTubeInfo(url){
   if(!url) return {type:"", id:"", embed:""};
   let clean = cleanUrl(url);
@@ -82,17 +73,16 @@ function getYouTubeInfo(url){
     let listId = clean.split('list=')[1].split('&')[0].split('?')[0];
     return {type:"playlist", id:listId, embed:`https://www.youtube.com/embed/videoseries?list=${listId}`, clean:clean};
   }
+  let m = clean.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
   if(/^[a-zA-Z0-9_-]{11}$/.test(clean)) {
     return {type:"video", id:clean, embed:`https://www.youtube.com/embed/${clean}`, clean:clean};
   }
-  let m = clean.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
   let vid = m? m[1] : "";
   if(vid){
     return {type:"video", id:vid, embed:`https://www.youtube.com/embed/${vid}`, clean:clean};
   }
   return {type:"", id:"", embed:"", clean:clean};
 }
-
 const form=document.getElementById('addSongForm');
 const status=document.getElementById('status');
 const bulkStatus=document.getElementById('bulkStatus');
@@ -100,8 +90,6 @@ const ytInput=document.getElementById('youtubeUrl');
 const fixBox=document.getElementById('fixBox');
 const preview=document.getElementById('preview');
 const previewFrame=document.getElementById('previewFrame');
-
-// Live preview and auto fix
 ytInput.addEventListener('input', ()=>{
   let raw = ytInput.value;
   let info = getYouTubeInfo(raw);
@@ -118,14 +106,13 @@ ytInput.addEventListener('input', ()=>{
     preview.style.display='none';
   }
 });
-
 form.addEventListener('submit', async (e)=>{
   e.preventDefault();
   status.innerText="Saving..."; status.style.color="#f39c12";
   let rawUrl=document.getElementById('youtubeUrl').value.trim();
   let info=getYouTubeInfo(rawUrl);
   if(!info.id){
-    status.innerText="❌ Invalid YouTube URL"; status.style.color="#e74c3c";
+    status.innerText="❌ Invalid YouTube URL - Use youtu.be/ID or youtube.com/shorts/ID"; status.style.color="#e74c3c";
     return;
   }
   const newSong={
@@ -142,7 +129,7 @@ form.addEventListener('submit', async (e)=>{
   };
   try{
     await addDoc(collection(db,"songs"),newSong);
-    status.innerText=`✅ Saved! ${info.type.toUpperCase()}: ${info.id} - Thumbnail OK`;
+    status.innerText=`✅ Saved! ${info.type.toUpperCase()}: ${info.id} - Thumbnail WILL BE OK!`;
     status.style.color="#2ecc71";
     form.reset();
     preview.style.display='none';
@@ -152,31 +139,13 @@ form.addEventListener('submit', async (e)=>{
     status.style.color="#e74c3c";
   }
 });
-
 window.bulkAdd=async()=>{
   let text=document.getElementById('bulkInput').value;
   if(!text.trim()){bulkStatus.innerText="❌ Paste songs first!"; bulkStatus.style.color="#e74c3c"; return;}
-
-  // Fix broken URLs across lines
-  let lines=text.split('\n');
-  let fixedLines=[];
-  let buf='';
-  for(let line of lines){
-    line=line.trim();
-    if(!line) continue;
-    if(buf &&!line.includes('|') && buf.includes('https://') && buf.lastIndexOf('https://') > buf.lastIndexOf('|')){
-      buf+=line;
-    } else {
-      if(buf) fixedLines.push(buf);
-      buf=line;
-    }
-  }
-  if(buf) fixedLines.push(buf);
-
+  let lines=text.split('\n').filter(l=>l.trim()!=='');
   let count=0;
   bulkStatus.innerText="Saving..."; bulkStatus.style.color="#f39c12";
-  for(const line of fixedLines){
-    if(line.trim()=='' ) continue;
+  for(const line of lines){
     const parts=line.split('|');
     if(parts.length<4) continue;
     let rawUrl=cleanUrl(parts[3].trim());
@@ -200,7 +169,7 @@ window.bulkAdd=async()=>{
       bulkStatus.innerText=`Saving... ${count} ပုဒ်`;
     }catch(e){console.error(e);}
   }
-  bulkStatus.innerText=`✅ ${count} ပုဒ်ထည့်ပြီးပါပြီ!`;
+  bulkStatus.innerText=`✅ ${count} ပုဒ်ထည့်ပြီးပါပြီ! FIXED!`;
   bulkStatus.style.color="#2ecc71";
   document.getElementById('bulkInput').value='';
 }
