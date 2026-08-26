@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PHYO WAI LIN // GUITAR - Firebase Live</title>
+<title>PHYO WAI LIN // GUITAR - Firebase Live - FIXED</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,sans-serif}
 body{background:#eaf2ff;color:#1a2b4c}
@@ -15,6 +15,7 @@ header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.92);backdr
 .info{padding:12px 14px}
 .badge{background:#e6f0ff;color:#3a7bd5;border:1px solid #cfe0ff;padding:4px 9px;border-radius:20px;font-size:10px;font-weight:700}
 .badge.playlist{background:#fff3e0;color:#ff9500;border-color:#ffcc80}
+.badge.mamas{background:#ffe6f0;color:#d53a7b;border-color:#ffcfdf}
 .title{font-weight:800;font-size:14px;margin:6px 0}
 .sub{font-size:11px;color:#6b7ea3}
 .links{max-width:1200px;margin:28px auto;padding:0 18px}
@@ -24,7 +25,7 @@ header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.92);backdr
 </style>
 </head><body>
 <header><b>PHYO WAI LIN // GUITAR</b><div><input id="search" class="search" placeholder="Search songs..."><span id="count" style="margin-left:10px">Loading...</span> <a href="#links" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Links</a> <a href="admin.html" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Admin</a></div></header>
-<div id="status" style="text-align:center;padding:10px;color:#2a5bd7;font-size:12px;font-weight:700">🔥 Firebase Live - Connecting...</div>
+<div id="status" style="text-align:center;padding:10px;color:#2a5bd7;font-size:12px;font-weight:700">🔥 Firebase Live - FIXED Version - Connecting...</div>
 <div class="grid" id="grid"></div>
 <div class="links" id="links"><h2>Official Links — <i style="color:#2a5bd7">light blue</i></h2><div class="link-grid">
 <a href="https://www.youtube.com/@Phyowailinguitar" target="_blank">YouTube ↗</a>
@@ -41,7 +42,7 @@ header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.92);backdr
 <a href="https://www.fiverr.com/pe/5r2Zej6" target="_blank">Fiverr ↗</a>
 <a href="https://discord.gg/gTFs3UrS" target="_blank">Discord ↗</a>
 </div></div>
-<footer style="text-align:center;padding:20px;font-size:11px;color:#8aa0c5">© 2026 Phyo Wai Lin Guitar • 💙 Firebase Live • Admin → Auto Update</footer>
+<footer style="text-align:center;padding:20px;font-size:11px;color:#8aa0c5">© 2026 Phyo Wai Lin Guitar • 💙 Firebase Live FIXED • No More Broken Thumbnails</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -65,20 +66,25 @@ const search = document.getElementById('search');
 
 let allSongs = [];
 
-// Fallback static if Firebase empty
 const fallback = [
-{title:"DESERT SESSIONS - One More Mile Of Mercy (Full Playlist)", key:"Am", bpm:"78", youtubeId:"PLHD-8nVDKUXQ", youtubeType:"playlist", embedUrl:"https://www.youtube.com/embed/videoseries?list=PLHD-8nVDKUXQ", sub:"From dust to grace - Every verse from the Mojave Desert • 8 Videos"},
-{title:"MAMA'S TRAIN (English Version)", key:"Em", bpm:"78", youtubeId:"pYgQ8YUcg3E", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/pYgQ8YUcg3E", sub:"Blues Rock Ballad"},
-{title:"BOOTS FULL OF DUST", key:"Am", bpm:"85", youtubeId:"1oizvfa2idU", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/1oizvfa2idU", sub:"Desert Blues"},
-{title:"MOM'S PHONE CALL", key:"Am", bpm:"75", youtubeId:"fDA3mh519zk", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/fDA3mh519zk", sub:"အမေ့ဖုန်းသံလာ"},
-{title:"Latest Release 4", key:"Am", bpm:"75", youtubeId:"lqu80JQXeHs", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/lqu80JQXeHs", sub:"Phyo Wai Lin"},
-{title:"One More Mile Of Mercy - FINALE", key:"Am", bpm:"75", youtubeId:"rf-w2POClHE", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/rf-w2POClHE", sub:"Desert Sessions • From dust to grace"},
-{title:"Video 6", key:"Am", bpm:"75", youtubeId:"FOnVSzPqAR8", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/FOnVSzPqAR8", sub:"Phyo Wai Lin Guitar"},
-{title:"Video 7 - QNk6ZgLWPbY", key:"Am", bpm:"75", youtubeId:"QNk6ZgLWPbY", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/QNk6ZgLWPbY", sub:"Official"},
-{title:"Short 1 - jSo4T2Os2Hc", key:"Am", bpm:"75", youtubeId:"jSo4T2Os2Hc", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/jSo4T2Os2Hc", sub:"YouTube Shorts"},
-{title:"Short 2 - my1SMrnyjsY", key:"Am", bpm:"75", youtubeId:"my1SMrnyjsY", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/my1SMrnyjsY", sub:"YouTube Shorts"},
-{title:"Video 10", key:"Am", bpm:"75", youtubeId:"rgFykqgKd3A", youtubeType:"video", embedUrl:"https://www.youtube.com/embed/rgFykqgKd3A", sub:"Phyo Wai Lin"}
+{title:"DESERT SESSIONS - One More Mile Of Mercy (Full Playlist)", key:"Am", bpm:"78", youtubeId:"PLHD-8nVDKUXQ", youtubeType:"playlist", sub:"From dust to grace - Every verse from the Mojave Desert • 8 Videos"},
+{title:"MAMA'S TRAIN - EP3 Emotional Tears Version - အိမ်နဲ့ဝေးတဲ့ သားတိုင်းအတွက်", key:"Am", bpm:"75", youtubeId:"g70KMUZ3nck", youtubeType:"video", sub:"New Release - For every son far from home 🏠💔"},
+{title:"MAMA'S TRAIN (English Version)", key:"Em", bpm:"78", youtubeId:"pYgQ8YUcg3E", youtubeType:"video", sub:"Blues Rock Ballad"},
+{title:"BOOTS FULL OF DUST", key:"Am", bpm:"85", youtubeId:"1oizvfa2idU", youtubeType:"video", sub:"Desert Blues"},
+{title:"MOM'S PHONE CALL", key:"Am", bpm:"75", youtubeId:"fDA3mh519zk", youtubeType:"video", sub:"အမေ့ဖုန်းသံလာ"},
+{title:"One More Mile Of Mercy - FINALE", key:"Am", bpm:"75", youtubeId:"rf-w2POClHE", youtubeType:"video", sub:"Desert Sessions • From dust to grace"},
+{title:"Latest Release 4", key:"Am", bpm:"75", youtubeId:"lqu80JQXeHs", youtubeType:"video", sub:"Phyo Wai Lin"},
 ];
+
+// FIXED: Always regenerate embed URL from ID - never trust broken stored URL
+function getEmbedUrl(s){
+  if(!s.youtubeId) return "";
+  let id = s.youtubeId.trim();
+  if(s.youtubeType==="playlist" || id.startsWith("PL")){
+    return `https://www.youtube.com/embed/videoseries?list=${id}`;
+  }
+  return `https://www.youtube.com/embed/${id}`;
+}
 
 function render(songs){
   grid.innerHTML = "";
@@ -86,32 +92,35 @@ function render(songs){
   let filtered = songs.filter(s=> s.title.toLowerCase().includes(q));
   count.innerText = `Songs (${filtered.length})`;
   filtered.forEach(s=>{
-    let badge = s.youtubeType==="playlist" ? `<span class="badge playlist">PLAYLIST • DESERT SESSIONS • 8 VIDEOS</span>` : `<span class="badge">ORIGINAL • ${s.key||""}</span>`;
-    if(s.title.includes("MAMA'S TRAIN")) badge=`<span class="badge">ORIGINAL • MAMA'S TRAIN</span>`;
-    if(s.title.includes("BOOTS")) badge=`<span class="badge">ORIGINAL • BOOTS FULL OF DUST</span>`;
+    let realEmbed = getEmbedUrl(s);
+    if(!realEmbed) return;
+    let badgeClass = "badge";
+    let badgeText = `ORIGINAL • ${s.key||"Am"}`;
+    if(s.youtubeType==="playlist" || s.youtubeId?.startsWith("PL")){ badgeClass="badge playlist"; badgeText="PLAYLIST • 8 VIDEOS"; }
+    if(s.title.includes("MAMA'S TRAIN")){ badgeClass="badge mamas"; badgeText="MAMA'S TRAIN • NEW"; }
+    if(s.title.includes("BOOTS")){ badgeText="ORIGINAL • BOOTS FULL OF DUST"; }
     let card = document.createElement('div');
-    card.className = s.youtubeType==="playlist" ? "card featured" : "card";
-    card.innerHTML = `<div class="embed"><iframe src="${s.embedUrl}" allowfullscreen loading="lazy"></iframe></div><div class="info">${badge}<div class="title">${s.title}</div><div class="sub">${s.sub||`Key: ${s.key} • ${s.bpm} BPM`}</div></div>`;
+    card.className = (s.youtubeType==="playlist"||s.title.includes("MAMA'S TRAIN"))? "card featured" : "card";
+    card.innerHTML = `<div class="embed"><iframe src="${realEmbed}" allowfullscreen loading="lazy" title="${s.title}"></iframe></div><div class="info"><span class="${badgeClass}">${badgeText}</span><div class="title">${s.title}</div><div class="sub">${s.sub||`Key: ${s.key} • ${s.bpm} BPM`}</div></div>`;
     grid.appendChild(card);
   });
 }
 
 search.addEventListener('input',()=>render(allSongs));
 
-// Firebase Realtime
 try{
   const q = query(collection(db,"songs"), orderBy("order","desc"));
   onSnapshot(q, (snap)=>{
     if(snap.empty){
-      status.innerText = "💙 Firebase Empty - Showing 11 Fallback Songs - Add via Admin";
+      status.innerText = "💙 Firebase Empty - Showing 7 Fallback Songs - Add via Admin - FIXED!";
       allSongs = fallback;
     } else {
-      allSongs = snap.docs.map(d=>d.data());
-      status.innerText = `✅ Firebase Live - ${allSongs.length} Songs - Admin → Auto Update`;
+      allSongs = snap.docs.map(d=>{ let data=d.data(); return {...data, youtubeId: (data.youtubeId||"").toString().trim() }; });
+      status.innerText = `✅ Firebase Live FIXED - ${allSongs.length} Songs - Thumbnails OK!`;
     }
     render(allSongs);
   }, (err)=>{
-    status.innerText = "⚠️ Firebase Offline - Showing Fallback";
+    status.innerText = "⚠️ Firebase Offline - Showing Fallback - FIXED";
     allSongs = fallback;
     render(allSongs);
   });
