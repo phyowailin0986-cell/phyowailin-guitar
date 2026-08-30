@@ -16,7 +16,7 @@ input:focus,textarea:focus{border-color:#f39c12;outline:none}
 textarea{height:120px;font-family:monospace;line-height:1.5}
 button{width:100%;padding:14px;background:#f39c12;border:none;border-radius:8px;color:#000;font-weight:bold;cursor:pointer;font-size:1.1rem;margin-top:10px}
 button:hover{background:#e67e22}
-#status,#bulkStatus{margin-top:15px;text-align:center;font-weight:bold;min-height:20px;font-size:13px}
+#status,#bulkStatus,#cleanStatus{margin-top:15px;text-align:center;font-weight:bold;min-height:20px;font-size:13px}
 hr{margin:30px 0;border:none;border-top:1px solid #333}
 .note{background:#1e1e1e;padding:10px;border-radius:5px;font-size:12px;color:#ccc;margin-bottom:15px;border-left:3px solid #f39c12}
 .preview{width:100%;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;margin-top:10px;display:none;border:1px solid #333}
@@ -28,189 +28,128 @@ hr{margin:30px 0;border:none;border-top:1px solid #333}
 <h1>🎸 Add New Song - FIXED V2 ✅</h1>
 <p class="sub">Firebase Connected - Thumbnail FIXED - Mama's Train Ready</p>
 <form id="addSongForm">
-<div class="form-group"><label>Song Title *</label><input type="text" id="title" placeholder="MAMA'S TRAIN EP3 - အိမ်နဲ့ဝေးတဲ့ သားတိုင်းအတွက်" required></div>
+<div class="form-group"><label>Song Title *</label><input type="text" id="title" placeholder="MAMA'S TRAIN EP3" required></div>
 <div class="form-group"><label>Key</label><input type="text" id="key" placeholder="Am" value="Am"></div>
 <div class="form-group"><label>BPM / Tempo</label><input type="text" id="bpm" placeholder="75" value="75"></div>
-<div class="form-group"><label>YouTube URL * (Video, Shorts, Playlist - All Supported)</label>
-<input type="text" id="youtubeUrl" placeholder="https://youtu.be/g70KMUZ3nck or https://youtube.com/shorts/IEWTM34zpCA" required>
+<div class="form-group"><label>YouTube URL *</label>
+<input type="text" id="youtubeUrl" placeholder="https://youtu.be/g70KMUZ3nck" required>
 <div class="fixBox" id="fixBox"></div>
 <div class="preview" id="preview"><iframe id="previewFrame" allowfullscreen></iframe></div>
 </div>
-<div class="form-group"><label>Chords & Lyrics / Description</label><textarea id="lyrics" placeholder="ပုလင်းတစ်လုံး စားပွဲပေါ် ပုံတစ်ပုံ နံရံပေါ်&#10;အိမ်နဲ့ဝေးတဲ့ သားတိုင်းအတွက် ဒီသီချင်းကို ဆိုတယ်"></textarea></div>
+<div class="form-group"><label>Chords & Lyrics / Description</label><textarea id="lyrics"></textarea></div>
 <button type="submit">🚀 Save to Firebase - FIXED</button>
 <hr>
-<button onclick="cleanDuplicates()" style="background:#e74c3c;color:#fff">🗑️ DELETE ALL WRONG DATA - Clean Firestore</button>
-<button onclick="addCorrectSongs()" style="background:#2ecc71;color:#fff">✅ ADD CORRECT 11 SONGS - From Your Channel</button>
+<button type="button" onclick="cleanDuplicates()" style="background:#e74c3c;color:#fff">🗑️ DELETE ALL WRONG DATA - Clean Firestore</button>
+<button type="button" onclick="addCorrectSongs()" style="background:#2ecc71;color:#fff">✅ ADD CORRECT 11 SONGS</button>
 <p id="cleanStatus"></p>
-
-<script>
-// ... အပေါ်က firebaseConfig ပြီးရင် ...
-
-window.cleanDuplicates = async () => {
-  if(!confirm("39 ပုဒ် လုံး ဖျက်မလား? Wrong Vevo IDs တွေ ဖျက်မယ်!")) return;
-  const { getDocs, deleteDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-  const snap = await getDocs(collection(db,"songs"));
-  for(let d of snap.docs){ await deleteDoc(doc(db,"songs",d.id)); }
-  document.getElementById('cleanStatus').innerText = "✅ 39 ပုဒ် ဖျက်ပြီးပြီ! Refresh!";
-}
-
-window.addCorrectSongs = async () => {
-  const correctSongs = [
-    {title:"MAMA'S TRAIN (Myanmar Version) - Video 6", key:"G", bpm:"80", youtubeId:"g70KMUZ3nck", youtubeType:"video", sub:"New - Emotional Tears"},
-    {title:"MAMA'S TRAIN (Myanmar Version) - EP3 Bottle", key:"G", bpm:"80", youtubeId:"DOtPRyzAZuc", youtubeType:"video", sub:"Bottle On Table"},
-    {title:"MAMA'S TRAIN - Guitar Lesson - 2nd Fret Train Rhythm", key:"Am", bpm:"80", youtubeId:"IEWTM34zpCA", youtubeType:"video", sub:"Lesson"},
-    {title:"MAMA'S TRAIN (English Version)", key:"Em", bpm:"78", youtubeId:"pYgQ8YUcg3E", youtubeType:"video", sub:"English"},
-    {title:"BOOTS FULL OF DUST - FINALE", key:"Am", bpm:"85", youtubeId:"1oizvfa2idU", youtubeType:"video", sub:"Desert Blues"},
-    {title:"One More Mile Of Mercy - FINALE", key:"Am", bpm:"75", youtubeId:"rf-w2POClHE", youtubeType:"video", sub:"Desert Sessions"},
-    {title:"MOM'S PHONE CALL", key:"Am", bpm:"75", youtubeId:"fDA3mh519zk", youtubeType:"video", sub:"အမေ့ဖုန်းသံလာ"},
-    {title:"Mom's 37 Missed Calls", key:"Em", bpm:"70", youtubeId:"DcfjIowTCKT", youtubeType:"video", sub:"From Instagram Reel"},
-    {title:"I Just Wanna Follow Mom", key:"Am", bpm:"75", youtubeId:"lqu80JQXeHs", youtubeType:"video", sub:"Phyo Wai Lin"},
-    {title:"Mom You Are My Sunshine", key:"C", bpm:"90", youtubeId:"FOnVSzPqAR8", youtubeType:"video", sub:"Sunshine"},
-    {title:"Mom wait for me just a moment", key:"G", bpm:"80", youtubeId:"QNk6ZgLWPbY", youtubeType:"video", sub:"Wait for me"},
-  ];
-  let c=0;
-  for(let s of correctSongs){
-    await addDoc(collection(db,"songs"), {...s, youtubeUrl:`https://youtu.be/${s.youtubeId}`, embedUrl:`https://www.youtube.com/embed/${s.youtubeId}`, lyrics:"", createdAt:new Date(), order:Date.now()+c});
-    c++;
-  }
-  document.getElementById('cleanStatus').innerText = `✅ ${c} ပုဒ် အမှန် ပြန်ထည့်ပြီးပြီ!`;
-}
-</script>
 </form>
 <p id="status"></p>
 <hr>
 <h1>📋 Bulk Add - FIXED</h1>
-<div class="note"><b>Format:</b> Title | Key | BPM | YouTube | Lyrics<br>Supports Shorts: youtube.com/shorts/ID</div>
-<div class="form-group"><textarea id="bulkInput" rows="10" placeholder="MAMA'S TRAIN EP3 - Tears Version | Am | 75 | https://youtu.be/g70KMUZ3nck | အိမ်နဲ့ဝေးတဲ့ သားတိုင်းအတွက်&#10;MAMA'S TRAIN EP3 - Bottle Version | Am | 75 | https://youtu.be/DOtPRyzAZuc | ပုလင်းတစ်လုံး စားပွဲပေါ်&#10;MAMA'S TRAIN Guitar Lesson - 2nd Fret | Am | 80 | https://youtube.com/shorts/IEWTM34zpCA | Lesson"></textarea></div>
+<div class="note"><b>Format:</b> Title | Key | BPM | YouTube | Lyrics</div>
+<div class="form-group"><textarea id="bulkInput" rows="10"></textarea></div>
 <button type="button" onclick="bulkAdd()">🚀 တစ်ခါတည်းထည့်မယ်</button>
 <p id="bulkStatus"></p>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
-  authDomain: "phyowailin-guitar.firebaseapp.com",
-  projectId: "phyowailin-guitar",
-  storageBucket: "phyowailin-guitar.firebasestorage.app",
-  messagingSenderId: "402954240690",
-  appId: "1:402954240690:web:953982abfcb3866c9cffab",
-  measurementId: "G-CCLP6CKXZL"
+apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
+authDomain: "phyowailin-guitar.firebaseapp.com",
+projectId: "phyowailin-guitar",
+storageBucket: "phyowailin-guitar.firebasestorage.app",
+messagingSenderId: "402954240690",
+appId: "1:402954240690:web:953982abfcb3866c9cffab"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 function cleanUrl(url){
-  if(!url) return "";
-  let c = url.replace(/\s+/g,'').trim();
-  c = c.split('&si=')[0].split('?si=')[0];
-  return c;
+if(!url) return "";
+let c = url.replace(/\s+/g,'').trim();
+c = c.split('&si=')[0].split('?si=')[0];
+return c;
 }
+
 function getYouTubeInfo(url){
-  if(!url) return {type:"", id:"", embed:""};
-  let clean = cleanUrl(url);
-  if(clean.includes('list=')){
-    let listId = clean.split('list=')[1].split('&')[0].split('?')[0];
-    return {type:"playlist", id:listId, embed:`https://www.youtube.com/embed/videoseries?list=${listId}`, clean:clean};
-  }
-  let m = clean.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
-  if(/^[a-zA-Z0-9_-]{11}$/.test(clean)) {
-    return {type:"video", id:clean, embed:`https://www.youtube.com/embed/${clean}`, clean:clean};
-  }
-  let vid = m? m[1] : "";
-  if(vid){
-    return {type:"video", id:vid, embed:`https://www.youtube.com/embed/${vid}`, clean:clean};
-  }
-  return {type:"", id:"", embed:"", clean:clean};
+if(!url) return {type:"", id:"", embed:""};
+let clean = cleanUrl(url);
+if(clean.includes('list=')){
+let listId = clean.split('list=')[1].split('&')[0].split('?')[0];
+return {type:"playlist", id:listId, embed:`https://www.youtube.com/embed/videoseries?list=${listId}`, clean:clean};
 }
+let m = clean.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/);
+if(/^[a-zA-Z0-9_-]{11}$/.test(clean)) { return {type:"video", id:clean, embed:`https://www.youtube.com/embed/${clean}`, clean:clean}; }
+let vid = m? m[1] : "";
+if(vid){ return {type:"video", id:vid, embed:`https://www.youtube.com/embed/${vid}`, clean:clean}; }
+return {type:"", id:"", embed:"", clean:clean};
+}
+
 const form=document.getElementById('addSongForm');
 const status=document.getElementById('status');
-const bulkStatus=document.getElementById('bulkStatus');
 const ytInput=document.getElementById('youtubeUrl');
 const fixBox=document.getElementById('fixBox');
 const preview=document.getElementById('preview');
 const previewFrame=document.getElementById('previewFrame');
+
 ytInput.addEventListener('input', ()=>{
-  let raw = ytInput.value;
-  let info = getYouTubeInfo(raw);
-  if(raw && info.clean!== raw){
-    fixBox.style.display='block';
-    fixBox.innerHTML=`🔧 Fixed: <span style="text-decoration:line-through;color:#888">${raw}</span><br>✅ ${info.clean}`;
-  } else {
-    fixBox.style.display='none';
-  }
-  if(info.embed){
-    preview.style.display='block';
-    previewFrame.src=info.embed;
-  } else {
-    preview.style.display='none';
-  }
+let raw = ytInput.value;
+let info = getYouTubeInfo(raw);
+if(raw && info.clean!== raw){
+fixBox.style.display='block';
+fixBox.innerHTML=`🔧 Fixed: <span style="text-decoration:line-through;color:#888">${raw}</span><br>✅ ${info.clean}`;
+} else { fixBox.style.display='none'; }
+if(info.embed){ preview.style.display='block'; previewFrame.src=info.embed; }
+else { preview.style.display='none'; }
 });
+
 form.addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  status.innerText="Saving..."; status.style.color="#f39c12";
-  let rawUrl=document.getElementById('youtubeUrl').value.trim();
-  let info=getYouTubeInfo(rawUrl);
-  if(!info.id){
-    status.innerText="❌ Invalid YouTube URL - Use youtu.be/ID or youtube.com/shorts/ID"; status.style.color="#e74c3c";
-    return;
-  }
-  const newSong={
-    title:document.getElementById('title').value.trim(),
-    key:document.getElementById('key').value.trim(),
-    bpm:document.getElementById('bpm').value.trim(),
-    youtubeUrl:info.clean,
-    youtubeId:info.id,
-    youtubeType:info.type,
-    embedUrl:info.embed,
-    lyrics:document.getElementById('lyrics').value.trim(),
-    createdAt:new Date(),
-    order:Date.now()
-  };
-  try{
-    await addDoc(collection(db,"songs"),newSong);
-    status.innerText=`✅ Saved! ${info.type.toUpperCase()}: ${info.id} - Thumbnail WILL BE OK!`;
-    status.style.color="#2ecc71";
-    form.reset();
-    preview.style.display='none';
-    fixBox.style.display='none';
-  }catch(err){
-    status.innerText="❌ Error: "+err.message;
-    status.style.color="#e74c3c";
-  }
+e.preventDefault();
+status.innerText="Saving..."; status.style.color="#f39c12";
+let rawUrl=document.getElementById('youtubeUrl').value.trim();
+let info=getYouTubeInfo(rawUrl);
+if(!info.id){ status.innerText="❌ Invalid YouTube URL"; status.style.color="#e74c3c"; return; }
+const newSong={
+title:document.getElementById('title').value.trim(),
+key:document.getElementById('key').value.trim(),
+bpm:document.getElementById('bpm').value.trim(),
+youtubeUrl:info.clean,
+youtubeId:info.id,
+youtubeType:info.type,
+embedUrl:info.embed,
+lyrics:document.getElementById('lyrics').value.trim(),
+createdAt:new Date(),
+order:Date.now()
+};
+try{
+await addDoc(collection(db,"songs"),newSong);
+status.innerText=`✅ Saved! ${info.type.toUpperCase()}: ${info.id}`;
+status.style.color="#2ecc71";
+form.reset(); preview.style.display='none'; fixBox.style.display='none';
+}catch(err){ status.innerText="❌ Error: "+err.message; status.style.color="#e74c3c"; }
 });
-window.bulkAdd=async()=>{
-  let text=document.getElementById('bulkInput').value;
-  if(!text.trim()){bulkStatus.innerText="❌ Paste songs first!"; bulkStatus.style.color="#e74c3c"; return;}
-  let lines=text.split('\n').filter(l=>l.trim()!=='');
-  let count=0;
-  bulkStatus.innerText="Saving..."; bulkStatus.style.color="#f39c12";
-  for(const line of lines){
-    const parts=line.split('|');
-    if(parts.length<4) continue;
-    let rawUrl=cleanUrl(parts[3].trim());
-    let info=getYouTubeInfo(rawUrl);
-    if(!info.id) continue;
-    const newSong={
-      title:parts[0].trim(),
-      key:parts[1].trim(),
-      bpm:parts[2].trim(),
-      youtubeUrl:info.clean,
-      youtubeId:info.id,
-      youtubeType:info.type,
-      embedUrl:info.embed,
-      lyrics:(parts[4]||"").trim(),
-      createdAt:new Date(),
-      order:Date.now()+count
-    };
-    try{
-      await addDoc(collection(db,"songs"),newSong);
-      count++;
-      bulkStatus.innerText=`Saving... ${count} ပုဒ်`;
-    }catch(e){console.error(e);}
-  }
-  bulkStatus.innerText=`✅ ${count} ပုဒ်ထည့်ပြီးပါပြီ! FIXED!`;
-  bulkStatus.style.color="#2ecc71";
-  document.getElementById('bulkInput').value='';
+
+window.cleanDuplicates = async () => {
+if(!confirm("39 ပုဒ် လုံး ဖျက်မလား?")) return;
+const snap = await getDocs(collection(db,"songs"));
+for(let d of snap.docs){ await deleteDoc(doc(db,"songs",d.id)); }
+document.getElementById('cleanStatus').innerText = "✅ 39 ပုဒ် ဖျက်ပြီးပြီ! Refresh!";
+document.getElementById('cleanStatus').style.color="#2ecc71";
 }
-</script>
-</body>
-</html>
+
+window.addCorrectSongs = async () => {
+const correctSongs = [
+{title:"MAMA'S TRAIN (Myanmar Version) - Video 6", key:"G", bpm:"80", youtubeId:"g70KMUZ3nck", youtubeType:"video", sub:"New - Emotional Tears"},
+{title:"MAMA'S TRAIN (Myanmar Version) - EP3 Bottle", key:"G", bpm:"80", youtubeId:"DOtPRyzAZuc", youtubeType:"video", sub:"Bottle On Table"},
+{title:"MAMA'S TRAIN - Guitar Lesson", key:"Am", bpm:"80", youtubeId:"IEWTM34zpCA", youtubeType:"video", sub:"Lesson"},
+{title:"MAMA'S TRAIN (English Version)", key:"Em", bpm:"78", youtubeId:"pYgQ8YUcg3E", youtubeType:"video", sub:"English"},
+{title:"BOOTS FULL OF DUST - FINALE", key:"Am", bpm:"85", youtubeId:"1oizvfa2idU", youtubeType:"video", sub:"Desert Blues"},
+{title:"One More Mile Of Mercy - FINALE", key:"Am", bpm:"75", youtubeId:"rf-w2POClHE", youtubeType:"video", sub:"Desert Sessions"},
+{title:"MOM'S PHONE CALL", key:"Am", bpm:"75", youtubeId:"fDA3mh519zk", youtubeType:"video", sub:"အမေ့ဖုန်းသံလာ"},
+{title:"Mom's 37 Missed Calls", key:"Em", bpm:"70", youtubeId:"DcfjIowTCKT", youtubeType:"video", sub:"From Instagram Reel"},
+{title:"I Just Wanna Follow Mom", key:"Am", bpm:"75", youtubeId:"lqu80JQXeHs", youtubeType:"video", sub:"Phyo Wai Lin"},
+{title:"Mom You Are My Sunshine", key:"C", bpm:"90", youtubeId:"FOnVSzPqAR8", youtubeType:"video", sub:"Sunshine"},
+{title:"Mom wait for me just a moment", key:"G", bpm:"80", youtubeId:"
