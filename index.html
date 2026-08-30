@@ -1,132 +1,74 @@
-<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PHYO WAI LIN // GUITAR - Firebase Live - FIXED</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,sans-serif}
-body{background:#eaf2ff;color:#1a2b4c}
-header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.92);backdrop-filter:blur(12px);display:flex;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #d0ddf5;align-items:center;flex-wrap:wrap;gap:10px}
-.search{padding:8px 12px;border-radius:20px;border:1px solid #d9e6ff;background:#fff;width:200px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:18px;max-width:1200px;margin:0 auto}
-.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(42,91,215,0.08);border:1px solid #d9e6ff;transition:0.3s}
-.card:hover{transform:translateY(-4px)}
-.card.featured{border:2px solid #ff9500}
-.embed{width:100%;aspect-ratio:16/9;background:#000}
-.embed iframe{width:100%;height:100%;border:0}
-.info{padding:12px 14px}
-.badge{background:#e6f0ff;color:#3a7bd5;border:1px solid #cfe0ff;padding:4px 9px;border-radius:20px;font-size:10px;font-weight:700}
-.badge.playlist{background:#fff3e0;color:#ff9500;border-color:#ffcc80}
-.badge.mamas{background:#ffe6f0;color:#d53a7b;border-color:#ffcfdf}
-.title{font-weight:800;font-size:14px;margin:6px 0}
-.sub{font-size:11px;color:#6b7ea3}
-.links{max-width:1200px;margin:28px auto;padding:0 18px}
-.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}
-.link-grid a{background:#fff;border:1px solid #d9e6ff;padding:12px;border-radius:10px;text-decoration:none;color:#1a2b4c;font-size:13px;font-weight:700}
-.link-grid a:hover{background:#2a5bd7;color:#fff}
-</style>
-</head><body>
-<header><b>PHYO WAI LIN // GUITAR</b><div><input id="search" class="search" placeholder="Search songs..."><span id="count" style="margin-left:10px">Loading...</span> <a href="#links" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Links</a> <a href="admin.html" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Admin</a></div></header>
-<div id="status" style="text-align:center;padding:10px;color:#2a5bd7;font-size:12px;font-weight:700">🔥 Firebase Live - FIXED Version - Connecting...</div>
-<div class="grid" id="grid"></div>
-<div class="links" id="links"><h2>Official Links — <i style="color:#2a5bd7">light blue</i></h2><div class="link-grid">
-<a href="https://www.youtube.com/@Phyowailinguitar" target="_blank">YouTube ↗</a>
-<a href="https://phyowailin-guitar.blogspot.com/" target="_blank">Blogspot ↗</a>
-<a href="https://www.instagram.com/phyowailin.guitar" target="_blank">Instagram ↗</a>
-<a href="https://www.threads.com/@phyowailin_guitar" target="_blank">Threads ↗</a>
-<a href="https://www.tiktok.com/@phyowailin.guitar" target="_blank">TikTok ↗</a>
-<a href="https://www.facebook.com/61592119626585" target="_blank">Facebook Page ↗</a>
-<a href="https://open.spotify.com/user/31by233hjprsdymh4xf2yx43rg6i" target="_blank">Spotify ↗</a>
-<a href="https://www.bandlab.com/post/570326f3-55dc-4480-9daa-91c78f3fa727" target="_blank">BandLab ↗</a>
-<a href="https://linktr.ee/Linp9" target="_blank">LinkTree ↗</a>
-<a href="https://x.com/phyowailinmusic" target="_blank">X / Twitter ↗</a>
-<a href="https://github.com/phyowailin0986-cell" target="_blank">GitHub ↗</a>
-<a href="https://www.fiverr.com/pe/5r2Zej6" target="_blank">Fiverr ↗</a>
-<a href="https://discord.gg/gTFs3UrS" target="_blank">Discord ↗</a>
-</div></div>
-<footer style="text-align:center;padding:20px;font-size:11px;color:#8aa0c5">© 2026 Phyo Wai Lin Guitar • 💙 Firebase Live FIXED • No More Broken Thumbnails</footer>
+<!DOCTYPE html> 
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"> 
+<title>PHYO WAI LIN // GUITAR - Firebase Live - FIXED</title> 
+<style> 
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,sans-serif} 
+body{background:#eaf2ff;color:#1a2b4c} 
+header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.92);backdrop-filter:blur(12px);display:flex;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #d0ddf5;align-items:center;flex-wrap:wrap;gap:10px} 
+.search{padding:8px 12px;border-radius:20px;border:1px solid #d9e6ff;background:#fff;width:200px} 
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:18px;max-width:1200px;margin:0 auto} 
+.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(42,91,215,0.08);border:1px solid #d9e6ff;transition:0.3s} 
+.card:hover{transform:translateY(-4px)} 
+.card.featured{border:2px solid #ff9500} 
+.embed{width:100%;aspect-ratio:16/9;background:#000} 
+.embed iframe{width:100%;height:100%;border:0} 
+.info{padding:12px 14px} 
+.badge{background:#e6f0ff;color:#3a7bd5;border:1px solid #cfe0ff;padding:4px 9px;border-radius:20px;font-size:10px;font-weight:700} 
+.badge.playlist{background:#fff3e0;color:#ff9500;border-color:#ffcc80} 
+.badge.mamas{background:#ffe6f0;color:#d53a7b;border-color:#ffcfdf} 
+.title{font-weight:800;font-size:14px;margin:6px 0} 
+.sub{font-size:11px;color:#6b7ea3} 
+.links{max-width:1200px;margin:28px auto;padding:0 18px} 
+.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px} 
+.link-grid a{background:#fff;border:1px solid #d9e6ff;padding:12px;border-radius:10px;text-decoration:none;color:#1a2b4c;font-size:13px;font-weight:700} 
+.link-grid a:hover{background:#2a5bd7;color:#fff} 
+</style> 
+</head>
+<body> 
+<header><b>PHYO WAI LIN // GUITAR</b><div><input id="search" class="search" placeholder="Search songs..."><span id="count" style="margin-left:10px">Loading...</span> <a href="#links" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Links</a> <a href="admin.html" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Admin</a></div></header> 
+<div id="status" style="text-align:center;padding:10px;color:#2a5bd7;font-size:12px;font-weight:700">🔥 Firebase Live - FIXED Version - Connecting...</div> 
+<div class="grid" id="grid"></div> 
+<div class="links" id="links"><h2>Official Links — <i style="color:#2a5bd7">light blue</i></h2><div class="link-grid"> 
+<a href="https://www.youtube.com/@Phyowailinguitar" target="_blank">YouTube ↗</a> 
+<a href="https://phyowailin-guitar.blogspot.com/" target="_blank">Blogspot ↗</a> 
+<a href="https://www.instagram.com/phyowailin.guitar" target="_blank">Instagram ↗</a> 
+<a href="https://www.threads.com/@phyowailin_guitar" target="_blank">Threads ↗</a> 
+<a href="https://www.tiktok.com/@phyowailin.guitar" target="_blank">TikTok ↗</a> 
+<a href="https://www.facebook.com/61592119626585" target="_blank">Facebook Page ↗</a> 
+<a href="https://open.spotify.com/user/31by233hjprsdymh4xf2yx43rg6i" target="_blank">Spotify ↗</a> 
+<a href="https://www.bandlab.com/post/570326f3-55dc-4480-9daa-91c78f3fa727" target="_blank">BandLab ↗</a> 
+<a href="https://linktr.ee/Linp9" target="_blank">LinkTree ↗</a> 
+<a href="https://x.com/phyowailinmusic" target="_blank">X / Twitter ↗</a> 
+<a href="https://github.com/phyowailin0986-cell" target="_blank">GitHub ↗</a> 
+<a href="https://www.fiverr.com/pe/5r2Zej6" target="_blank">Fiverr ↗</a> 
+<a href="https://discord.gg/gTFs3UrS" target="_blank">Discord ↗</a> 
+</div></div> 
+<footer style="text-align:center;padding:20px;font-size:11px;color:#8aa0c5">© 2026 Phyo Wai Lin Guitar • 💙 Firebase Live FIXED • No More Broken Thumbnails</footer> 
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<script type="module"> 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; 
+import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"; 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
-  authDomain: "phyowailin-guitar.firebaseapp.com",
-  projectId: "phyowailin-guitar",
-  storageBucket: "phyowailin-guitar.firebasestorage.app",
-  messagingSenderId: "402954240690",
-  appId: "1:402954240690:web:953982abfcb3866c9cffab"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const firebaseConfig = { 
+apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo", 
+authDomain: "phyowailin-guitar.firebaseapp.com", 
+projectId: "phyowailin-guitar", 
+storageBucket: "phyowailin-guitar.firebasestorage.app", 
+messagingSenderId: "402954240690", 
+appId: "1:402954240690:web:953982abfcb3866c9cffab" 
+}; 
 
-const grid = document.getElementById('grid');
-const count = document.getElementById('count');
-const status = document.getElementById('status');
-const search = document.getElementById('search');
+const app = initializeApp(firebaseConfig); 
+const db = getFirestore(app); 
+const grid = document.getElementById('grid'); 
+const count = document.getElementById('count'); 
+const status = document.getElementById('status'); 
+const search = document.getElementById('search'); 
+let allSongs = []; 
 
-let allSongs = [];
-
-const fallback = [
-{title:"DESERT SESSIONS - One More Mile Of Mercy (Full Playlist)", key:"Am", bpm:"78", youtubeId:"PLHD-8nVDKUXQ", youtubeType:"playlist", sub:"From dust to grace - Every verse from the Mojave Desert • 8 Videos"},
-{title:"MAMA'S TRAIN - EP3 Emotional Tears Version - အိမ်နဲ့ဝေးတဲ့ သားတိုင်းအတွက်", key:"Am", bpm:"75", youtubeId:"g70KMUZ3nck", youtubeType:"video", sub:"New Release - For every son far from home 🏠💔"},
-{title:"MAMA'S TRAIN (English Version)", key:"Em", bpm:"78", youtubeId:"pYgQ8YUcg3E", youtubeType:"video", sub:"Blues Rock Ballad"},
-{title:"BOOTS FULL OF DUST", key:"Am", bpm:"85", youtubeId:"1oizvfa2idU", youtubeType:"video", sub:"Desert Blues"},
-{title:"MOM'S PHONE CALL", key:"Am", bpm:"75", youtubeId:"fDA3mh519zk", youtubeType:"video", sub:"အမေ့ဖုန်းသံလာ"},
-{title:"One More Mile Of Mercy - FINALE", key:"Am", bpm:"75", youtubeId:"rf-w2POClHE", youtubeType:"video", sub:"Desert Sessions • From dust to grace"},
-{title:"Latest Release 4", key:"Am", bpm:"75", youtubeId:"lqu80JQXeHs", youtubeType:"video", sub:"Phyo Wai Lin"},
-];
-
-// FIXED: Always regenerate embed URL from ID - never trust broken stored URL
-function getEmbedUrl(s){
-  if(!s.youtubeId) return "";
-  let id = s.youtubeId.trim();
-  if(s.youtubeType==="playlist" || id.startsWith("PL")){
-    return `https://www.youtube.com/embed/videoseries?list=${id}`;
-  }
-  return `https://www.youtube.com/embed/${id}`;
-}
-
-function render(songs){
-  grid.innerHTML = "";
-  let q = search.value.toLowerCase();
-  let filtered = songs.filter(s=> s.title.toLowerCase().includes(q));
-  count.innerText = `Songs (${filtered.length})`;
-  filtered.forEach(s=>{
-    let realEmbed = getEmbedUrl(s);
-    if(!realEmbed) return;
-    let badgeClass = "badge";
-    let badgeText = `ORIGINAL • ${s.key||"Am"}`;
-    if(s.youtubeType==="playlist" || s.youtubeId?.startsWith("PL")){ badgeClass="badge playlist"; badgeText="PLAYLIST • 8 VIDEOS"; }
-    if(s.title.includes("MAMA'S TRAIN")){ badgeClass="badge mamas"; badgeText="MAMA'S TRAIN • NEW"; }
-    if(s.title.includes("BOOTS")){ badgeText="ORIGINAL • BOOTS FULL OF DUST"; }
-    let card = document.createElement('div');
-    card.className = (s.youtubeType==="playlist"||s.title.includes("MAMA'S TRAIN"))? "card featured" : "card";
-    card.innerHTML = `<div class="embed"><iframe src="${realEmbed}" allowfullscreen loading="lazy" title="${s.title}"></iframe></div><div class="info"><span class="${badgeClass}">${badgeText}</span><div class="title">${s.title}</div><div class="sub">${s.sub||`Key: ${s.key} • ${s.bpm} BPM`}</div></div>`;
-    grid.appendChild(card);
-  });
-}
-
-search.addEventListener('input',()=>render(allSongs));
-
-try{
-  const q = query(collection(db,"songs"), orderBy("order","desc"));
-  onSnapshot(q, (snap)=>{
-    if(snap.empty){
-      status.innerText = "💙 Firebase Empty - Showing 7 Fallback Songs - Add via Admin - FIXED!";
-      allSongs = fallback;
-    } else {
-      allSongs = snap.docs.map(d=>{ let data=d.data(); return {...data, youtubeId: (data.youtubeId||"").toString().trim() }; });
-      status.innerText = `✅ Firebase Live FIXED - ${allSongs.length} Songs - Thumbnails OK!`;
-    }
-    render(allSongs);
-  }, (err)=>{
-    status.innerText = "⚠️ Firebase Offline - Showing Fallback - FIXED";
-    allSongs = fallback;
-    render(allSongs);
-  });
-}catch(e){
-  allSongs = fallback;
-  render(allSongs);
-}
-</script>
-</body></html>
+const fallback = [ 
+{title:"DESERT SESSIONS - One More Mile Of Mercy (Full Playlist)", key:"Am", bpm:"78", youtubeId:"PLHD-8nVDKUXQ", youtubeType:"playlist", sub:"From dust to grace - Every verse from the Mojave Desert • 8 Videos"}, 
+{title:"MAMA'S TRAIN - EP3 Emotional Tears
