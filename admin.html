@@ -1,195 +1,29 @@
 <!DOCTYPE html>
-<html lang="my">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard V5 - CRUD</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
-body{background:#121212;color:#fff;padding:20px;max-width:900px;margin:auto}
-h1{color:#f39c12;margin-bottom:10px;text-align:center;font-size:1.8rem}
-.sub{text-align:center;color:#888;margin-bottom:20px;font-size:12px}
-.form-group{margin-bottom:15px}
-label{display:block;margin-bottom:5px;color:#f39c12;font-weight:bold;font-size:13px}
-input,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#1e1e1e;color:#fff;font-size:14px}
-button{padding:12px 18px;background:#f39c12;border:none;border-radius:8px;color:#000;font-weight:bold;cursor:pointer;margin:5px 2px}
-button:hover{opacity:0.8}
-button.danger{background:#e74c3c;color:#fff}
-button.success{background:#2ecc71;color:#fff}
-button.edit{background:#3498db;color:#fff}
-button.export{background:#9b59b6;color:#fff}
-#status{margin-top:15px;text-align:center;font-weight:bold}
-.songList{margin-top:30px}
-.songItem{background:#1e1e1e;padding:12px;border-radius:8px;margin-bottom:10px;border-left:3px solid #f39c12;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.songInfo{flex:1;font-size:13px}
-.songInfo b{color:#f39c12}
-.songBtns{display:flex;gap:5px;flex-wrap:wrap}
-</style>
-</head>
-<body>
-<h1>🎸 Admin Dashboard V5 - CRUD</h1>
-<p class="sub">ပြင်မယ် | ဖျက်မယ် | ထည့်မယ် | Export</p>
-
-<!-- ADD / EDIT FORM -->
-<form id="addSongForm">
-<input type="hidden" id="editId">
-<div class="form-group"><label>Song Title *</label><input type="text" id="title" required></div>
-<div class="form-group"><label>Key</label><input type="text" id="key"></div>
-<div class="form-group"><label>BPM</label><input type="text" id="bpm"></div>
-<div class="form-group"><label>YouTube URL *</label><input type="text" id="youtubeUrl" required></div>
-<div class="form-group"><label>Lyrics</label><textarea id="lyrics"></textarea></div>
-<button type="submit" id="saveBtn">🚀 Save Song</button>
-<button type="button" onclick="resetForm()">❌ Cancel</button>
-</form>
-
-<hr>
-<button onclick="addCorrectSongs()" class="success">✅ ADD 11 SONGS</button>
-<button onclick="exportJSON()" class="export">📦 Export JSON</button>
-<button onclick="cleanDuplicates()" class="danger">🗑️ DELETE ALL</button>
-<p id="status"></p>
-
-<!-- SONG LIST -->
-<div class="songList">
-<h2>📋 Current Songs</h2>
-<div id="songListContainer">Loading...</div>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADMIN V7</title>
+<style>body{background:#0a0a0a;color:#fff;font-family:Inter,sans-serif;padding:20px;max-width:600px;margin:auto}input,select,button{width:100%;padding:12px;margin:6px 0;background:#161616;border:1px solid #222;color:#fff;border-radius:8px}button{background:#fff;color:#000;font-weight:700;cursor:pointer}.card{background:#161616;padding:12px;border-radius:10px;margin:8px 0;border:1px solid #222}</style></head><body>
+<h2>ADMIN V7 - Live Sync</h2>
+<input id="pass" type="password" placeholder="Password: phyowai2026">
+<button onclick="login()">Login</button>
+<div id="panel" style="display:none">
+<input id="title" placeholder="Title"><input id="mm" placeholder="Myanmar Title">
+<input id="yt" placeholder="YouTube ID or Link - pYgQ8YUcg3E">
+<input id="info" placeholder="Em | 78 BPM | Blues Rock Ballad">
+<select id="type"><option value="main">MY SONGS</option><option value="other">OTHER ORIGINALS</option></select>
+<button onclick="add()">+ Add to Firebase</button>
+<div id="list"></div>
 </div>
-
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, orderBy, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-const firebaseConfig = {
-apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo",
-authDomain: "phyowailin-guitar.firebaseapp.com",
-projectId: "phyowailin-guitar",
-storageBucket: "phyowailin-guitar.firebasestorage.app",
-messagingSenderId: "402954240690",
-appId: "1:402954240690:web:953982abfcb3866c9cffab"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const songsRef = collection(db,"songs");
-
-function getYouTubeInfo(url){
-let clean = url.replace(/\s+/g,'').split('&si=')[0].split('?si=')[0];
-let m = clean.match(/(?:v=|youtu\.be\/|shorts\/)([a-zA-Z0-9_-]{11})/);
-let vid = m? m[1] : (clean.length === 11? clean : "");
-return {id:vid, embed:`https://www.youtube.com/embed/${vid}`, url:`https://youtu.be/${vid}`};
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = { apiKey:"YOUR_API_KEY", authDomain:"phyowailin-guitar.firebaseapp.com", projectId:"phyowailin-guitar", appId:"YOUR_APP_ID" };
+const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+window.login=()=>{ if(pass.value==='phyowai2026'){panel.style.display='block'; load()} else alert('Wrong') }
+function cleanYT(u){ let id=u.split('v=')[1]||u.split('/').pop(); return id.split('?')[0].split('&')[0].replace('shorts/',''); }
+window.add=async()=>{
+let yt=cleanYT(document.getElementById('yt').value);
+let data={title:title.value, mm:mm.value, yt:yt, info:info.value, type:type.value};
+await addDoc(collection(db,"songs"), data); alert('Live Added!'); load()
 }
-
-// 1. ထည့်မယ် + ပြင်မယ်
-document.getElementById('addSongForm').addEventListener('submit', async (e)=>{
-e.preventDefault();
-const status=document.getElementById('status');
-const editId=document.getElementById('editId').value;
-let info=getYouTubeInfo(document.getElementById('youtubeUrl').value);
-const data={
-title:document.getElementById('title').value,
-key:document.getElementById('key').value,
-bpm:document.getElementById('bpm').value,
-lyrics:document.getElementById('lyrics').value,
-youtubeId:info.id,
-youtubeUrl:info.url,
-embedUrl:info.embed,
-order:Date.now()
-};
-try{
-if(editId){
-await updateDoc(doc(db,"songs",editId), data);
-status.innerText="✅ Updated!";
-}else{
-await addDoc(songsRef, {...data, createdAt:new Date()});
-status.innerText="✅ Added!";
-}
-resetForm();
-}catch(err){status.innerText="❌ "+err.message}
-});
-
-// 2. ဖျက်မယ်
-window.deleteSong = async (id) => {
-if(confirm("ဖျက်မလား?")){
-await deleteDoc(doc(db,"songs",id));
-document.getElementById('status').innerText="🗑️ Deleted";
-}
-}
-
-// 3. ပြင်မယ်ဆိုရင် Form ထဲဖြည့်ပေးမယ်
-window.editSong = (id,title,key,bpm,url,lyrics) => {
-document.getElementById('editId').value=id;
-document.getElementById('title').value=title;
-document.getElementById('key').value=key;
-document.getElementById('bpm').value=bpm;
-document.getElementById('youtubeUrl').value=url;
-document.getElementById('lyrics').value=lyrics;
-document.getElementById('saveBtn').innerText="💾 Update Song";
-window.scrollTo(0,0);
-}
-
-window.resetForm = () => {
-document.getElementById('addSongForm').reset();
-document.getElementById('editId').value="";
-document.getElementById('saveBtn').innerText="🚀 Save Song";
-}
-
-// 4. Live List ထုတ်ပြမယ်
-onSnapshot(query(songsRef, orderBy("order","desc")), (snapshot)=>{
-let html="";
-snapshot.forEach(docSnap=>{
-let s=docSnap.data();
-html+=`<div class="songItem">
-<div class="songInfo">
-<b>${s.title}</b><br>
-Key: ${s.key} | BPM: ${s.bpm} | ID: ${s.youtubeId}
-</div>
-<div class="songBtns">
-<button class="edit" onclick="editSong('${docSnap.id}','${s.title}','${s.key}','${s.bpm}','${s.youtubeUrl}','${s.lyrics}')">✏️ ပြင်</button>
-<button class="danger" onclick="deleteSong('${docSnap.id}')">🗑️ ဖျက်</button>
-</div>
-</div>`;
-});
-document.getElementById('songListContainer').innerHTML = html || "No songs yet";
-});
-
-// 5. 11 ပုဒ်ထည့်မယ်
-window.addCorrectSongs = async () => {
-const list=[
-["MAMA'S TRAIN Video 6","G","80","g70KMUZ3nck"],
-["MAMA'S TRAIN EP3","G","80","DOtPRyzAZuc"],
-["Guitar Lesson","Am","80","IEWTM34zpCA"],
-["English Version","Em","78","pYgQ8YUcg3E"],
-["BOOTS FULL OF DUST","Am","85","1oizvfa2idU"],
-["One More Mile","Am","75","rf-w2POClHE"],
-["MOM'S PHONE CALL","Am","75","fDA3mh519zk"],
-["37 Missed Calls","Em","70","DcfjIowTCKT"],
-["I Just Wanna Follow","Am","75","lqu80JQXeHs"],
-["You Are My Sunshine","C","90","FOnVSzPqAR8"],
-["Wait For Me","G","80","g70KMUZ3nck"]
-];
-for(let [t,k,b,id] of list){
-let info=getYouTubeInfo(id);
-await addDoc(songsRef,{title:t,key:k,bpm:b,youtubeId:id,youtubeUrl:info.url,embedUrl:info.embed,createdAt:new Date(),order:Date.now()});
-}
-document.getElementById('status').innerText="✅ 11 Songs Added";
-}
-
-// 6. Export JSON
-window.exportJSON = async () => {
-const snap=await getDocs(songsRef);
-let data=[];
-snap.forEach(d=>data.push({id:d.id,...d.data()}));
-let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-let url=URL.createObjectURL(blob);
-let a=document.createElement('a');
-a.href=url; a.download="phyowailin_songs_backup.json"; a.click();
-}
-
-// 7. All Delete
-window.cleanDuplicates = async () => {
-if(!confirm("အားလုံးဖျက်မလား?")) return;
-const snap=await getDocs(songsRef);
-for(let d of snap.docs){await deleteDoc(doc(db,"songs",d.id));}
-document.getElementById('status').innerText="✅ All Deleted";
-}
-</script>
-</body>
-</html>
+async function load(){ list.innerHTML=''; const snap=await getDocs(collection(db,"songs")); snap.forEach(d=>{ list.innerHTML+=`<div class="card">${d.data().title} - ${d.data().yt} <button onclick="del('${d.id}')">Delete</button></div>` }) }
+window.del=async(id)=>{ await deleteDoc(doc(db,"songs",id)); load() }
+</script></body></html>
