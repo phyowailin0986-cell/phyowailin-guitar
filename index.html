@@ -1,74 +1,110 @@
-<!DOCTYPE html> 
-<html lang="my">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"> 
-<title>PHYO WAI LIN // GUITAR - Firebase Live - FIXED</title> 
-<style> 
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,sans-serif} 
-body{background:#eaf2ff;color:#1a2b4c} 
-header{position:sticky;top:0;z-index:10;background:rgba(234,242,255,0.92);backdrop-filter:blur(12px);display:flex;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #d0ddf5;align-items:center;flex-wrap:wrap;gap:10px} 
-.search{padding:8px 12px;border-radius:20px;border:1px solid #d9e6ff;background:#fff;width:200px} 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:18px;max-width:1200px;margin:0 auto} 
-.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(42,91,215,0.08);border:1px solid #d9e6ff;transition:0.3s} 
-.card:hover{transform:translateY(-4px)} 
-.card.featured{border:2px solid #ff9500} 
-.embed{width:100%;aspect-ratio:16/9;background:#000} 
-.embed iframe{width:100%;height:100%;border:0} 
-.info{padding:12px 14px} 
-.badge{background:#e6f0ff;color:#3a7bd5;border:1px solid #cfe0ff;padding:4px 9px;border-radius:20px;font-size:10px;font-weight:700} 
-.badge.playlist{background:#fff3e0;color:#ff9500;border-color:#ffcc80} 
-.badge.mamas{background:#ffe6f0;color:#d53a7b;border-color:#ffcfdf} 
-.title{font-weight:800;font-size:14px;margin:6px 0} 
-.sub{font-size:11px;color:#6b7ea3} 
-.links{max-width:1200px;margin:28px auto;padding:0 18px} 
-.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px} 
-.link-grid a{background:#fff;border:1px solid #d9e6ff;padding:12px;border-radius:10px;text-decoration:none;color:#1a2b4c;font-size:13px;font-weight:700} 
-.link-grid a:hover{background:#2a5bd7;color:#fff} 
-</style> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHYO WAI LIN GUITAR - OFFICIAL 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--card:#161616;--text:#fff;--muted:#888}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:var(--bg);color:var(--text)}
+header{padding:40px 20px;text-align:center;border-bottom:1px solid #222}
+h1{font-size:2.2rem;font-weight:800}
+nav{display:flex;justify-content:center;gap:10px;margin:25px 0;flex-wrap:wrap}
+nav button{background:#161616;color:#888;border:1px solid #222;padding:10px 20px;border-radius:30px;cursor:pointer;font-weight:600}
+nav button.active{background:#fff;color:#000}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.card{background:#161616;border-radius:16px;overflow:hidden;border:1px solid #222}
+.card img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.card-body{padding:14px}
+.badge{background:#222;color:#888;font-size:.7rem;padding:4px 8px;border-radius:6px;margin-right:4px}
+.links a{font-size:.8rem;background:#222;padding:6px 10px;border-radius:6px;color:#fff;text-decoration:none;margin-right:6px;display:inline-block;margin-top:8px}
+.socials{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:40px;padding-top:20px;border-top:1px solid #222}
+.socials a{color:#888;font-size:.8rem;text-decoration:none;border:1px solid #222;padding:8px 12px;border-radius:20px}
+.tab{display:none}.tab.active{display:block}
+</style>
 </head>
-<body> 
-<header><b>PHYO WAI LIN // GUITAR</b><div><input id="search" class="search" placeholder="Search songs..."><span id="count" style="margin-left:10px">Loading...</span> <a href="#links" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Links</a> <a href="admin.html" style="margin-left:10px;text-decoration:none;color:#2a5bd7">Admin</a></div></header> 
-<div id="status" style="text-align:center;padding:10px;color:#2a5bd7;font-size:12px;font-weight:700">🔥 Firebase Live - FIXED Version - Connecting...</div> 
-<div class="grid" id="grid"></div> 
-<div class="links" id="links"><h2>Official Links — <i style="color:#2a5bd7">light blue</i></h2><div class="link-grid"> 
-<a href="https://www.youtube.com/@Phyowailinguitar" target="_blank">YouTube ↗</a> 
-<a href="https://phyowailin-guitar.blogspot.com/" target="_blank">Blogspot ↗</a> 
-<a href="https://www.instagram.com/phyowailin.guitar" target="_blank">Instagram ↗</a> 
-<a href="https://www.threads.com/@phyowailin_guitar" target="_blank">Threads ↗</a> 
-<a href="https://www.tiktok.com/@phyowailin.guitar" target="_blank">TikTok ↗</a> 
-<a href="https://www.facebook.com/61592119626585" target="_blank">Facebook Page ↗</a> 
-<a href="https://open.spotify.com/user/31by233hjprsdymh4xf2yx43rg6i" target="_blank">Spotify ↗</a> 
-<a href="https://www.bandlab.com/post/570326f3-55dc-4480-9daa-91c78f3fa727" target="_blank">BandLab ↗</a> 
-<a href="https://linktr.ee/Linp9" target="_blank">LinkTree ↗</a> 
-<a href="https://x.com/phyowailinmusic" target="_blank">X / Twitter ↗</a> 
-<a href="https://github.com/phyowailin0986-cell" target="_blank">GitHub ↗</a> 
-<a href="https://www.fiverr.com/pe/5r2Zej6" target="_blank">Fiverr ↗</a> 
-<a href="https://discord.gg/gTFs3UrS" target="_blank">Discord ↗</a> 
-</div></div> 
-<footer style="text-align:center;padding:20px;font-size:11px;color:#8aa0c5">© 2026 Phyo Wai Lin Guitar • 💙 Firebase Live FIXED • No More Broken Thumbnails</footer> 
+<body>
+<header>
+<h1>PHYO WAI LIN GUITAR</h1>
+<p style="color:#888;margin-top:8px">OFFICIAL CATALOG 2026 - 3 Originals | 3 Lessons</p>
+<nav>
+<button class="active" onclick="showTab('songs',this)">MY SONGS</button>
+<button onclick="showTab('originals',this)">OTHER ORIGINALS</button>
+<button onclick="showTab('lessons',this)">LESSONS</button>
+</nav>
+</header>
+<div class="container">
+<div id="songs" class="tab active"><div class="grid" id="songs-grid"></div></div>
+<div id="originals" class="tab"><div class="grid" id="others-grid"></div></div>
+<div id="lessons" class="tab"><div id="lessons-list"></div></div>
+<div class="socials">
+<a href="https://www.youtube.com/@Phyowailinguitar">YouTube</a>
+<a href="https://phyowailin-guitar.blogspot.com/">Blog</a>
+<a href="https://www.instagram.com/phyowailin.guitar">IG</a>
+<a href="https://www.threads.com/@phyowailin_guitar">Threads</a>
+<a href="https://www.tiktok.com/@phyowailin.guitar">TikTok</a>
+<a href="https://www.facebook.com/61592119626585">FB Page</a>
+<a href="https://open.spotify.com/user/31by233hjprsdymh4xf2yx43rg6i">Spotify</a>
+<a href="https://github.com/phyowailin0986-cell/phyowailin-guitar">GitHub</a>
+<a href="https://linktr.ee/Linp9">LinkTree</a>
+</div>
+</div>
 
-<script type="module"> 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"; 
-import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"; 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "phyowailin-guitar.firebaseapp.com",
+  projectId: "phyowailin-guitar",
+  storageBucket: "phyowailin-guitar.appspot.com",
+  appId: "YOUR_APP_ID"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-const firebaseConfig = { 
-apiKey: "AIzaSyAMxAo1IFOLV5iOJm4mdd8MSvy3TbMFfSo", 
-authDomain: "phyowailin-guitar.firebaseapp.com", 
-projectId: "phyowailin-guitar", 
-storageBucket: "phyowailin-guitar.firebasestorage.app", 
-messagingSenderId: "402954240690", 
-appId: "1:402954240690:web:953982abfcb3866c9cffab" 
-}; 
+const fallbackSongs = [
+{title:"MAMA'S TRAIN", mm:"အမေ့နောက်ပဲလိုက်ချင်တယ်", yt:"pYgQ8YUcg3E", suno:["suno.com/s/tZDJ4h8J84N324gO","suno.com/s/lDf0wum5Q5f5npRx"], info:"Em | 78 BPM | Blues Rock Ballad", type:"main"},
+{title:"BOOTS FULL OF DUST", mm:"အမေ့ဖုန်းနံပတ်", yt:"1oizvfa2idU", suno:["suno.com/s/YNA9k6jVtEJifYSU"], info:"Am | 85 BPM | Desert Blues", type:"main"},
+{title:"MOM'S PHONE CALL", mm:"အမေ့ဖုန်းသံလာ", yt:"fDA3mh519zk", versions:["lqu80JQXeHs","rf-w2POClHE","qT-j6hoFw7E","FOnVSzPqAR8"], info:"Need Cover Art ⚠️", type:"main"},
+{title:"မေမေအိုနဲ့ဂီတာအို", yt:"rgFykqgKd3A", suno:["suno.com/s/uorPyhyqwpjmxCOX"], type:"other"},
+{title:"ONE MORE MILE OF MERCY", yt:"rf-w2POClHE", suno:["suno.com/s/rpFgyAjsFisslIld"], type:"other"},
+{title:"Mom You Are My Sunshine", yt:"FOnVSzPqAR8", suno:["suno.com/s/RXKXQPeWzPWjQreB"], type:"other"},
+{title:"Mom's 37 Missed Calls", yt:"jSo4T2Os2Hc", isShort:true, type:"other"},
+{title:"Guitar Story", yt:"my1SMrnyjsY", isShort:true, type:"other"}
+];
 
-const app = initializeApp(firebaseConfig); 
-const db = getFirestore(app); 
-const grid = document.getElementById('grid'); 
-const count = document.getElementById('count'); 
-const status = document.getElementById('status'); 
-const search = document.getElementById('search'); 
-let allSongs = []; 
+const fallbackLessons = [
+{title:"C MAJOR - Lesson 01", yt:"eGHF4Pv2ZXY", fb:"1CFR6drxvs", tt:"ZTURxtNxa", ig:"Dcz1t9Izboh"},
+{title:"G MAJOR - Lesson 02", yt:"CFZUgXDh0pE", fb:"1EqTACdSRR", tt:"ZTURCphuV", ig:"Dcxykc6Tx8X"},
+{title:"D MAJOR - Lesson 03", yt:"KcArWWtnfv0", fb:"19X8ohTqmr", tt:"ZTURCpDaW", ig:"DcsxKwfjRdy"}
+];
 
-const fallback = [ 
-{title:"DESERT SESSIONS - One More Mile Of Mercy (Full Playlist)", key:"Am", bpm:"78", youtubeId:"PLHD-8nVDKUXQ", youtubeType:"playlist", sub:"From dust to grace - Every verse from the Mojave Desert • 8 Videos"}, 
-{title:"MAMA'S TRAIN - EP3 Emotional Tears
+function render(data){
+document.getElementById('songs-grid').innerHTML='';
+document.getElementById('others-grid').innerHTML='';
+data.filter(s=>s.type==='main').forEach(s=>{
+document.getElementById('songs-grid').innerHTML+=`<div class="card"><img src="https://img.youtube.com/vi/${s.yt}/hqdefault.jpg"><div class="card-body"><h3>${s.title}</h3><p style="color:#888;font-size:.85rem">${s.mm||''}</p><span class="badge">${s.info||''}</span><div class="links"><a href="https://youtu.be/${s.yt}" target="_blank">YouTube</a>${(s.suno||[]).map(u=>`<a href="https://${u}" target="_blank">Suno</a>`).join('')}${(s.versions||[]).map(v=>`<a href="https://youtu.be/${v}" target="_blank">V</a>`).join('')}</div></div></div>`
+});
+data.filter(s=>s.type==='other').forEach(s=>{
+document.getElementById('others-grid').innerHTML+=`<div class="card"><img src="https://img.youtube.com/vi/${s.yt}/hqdefault.jpg"><div class="card-body"><h3>${s.title}</h3><div class="links"><a href="https://youtu.be/${s.yt}" target="_blank">Play</a>${(s.suno||[]).map(u=>`<a href="https://${u}" target="_blank">Suno</a>`).join('')}</div></div></div>`
+});
+let lHtml=''; fallbackLessons.forEach(l=>{
+lHtml+=`<div style="background:#161616;border:1px solid #222;border-radius:12px;padding:16px;margin-bottom:12px"><h3>${l.title}</h3><div class="links"><a href="https://youtube.com/shorts/${l.yt}">YouTube Short</a><a href="https://vm.tiktok.com/${l.tt}/">TikTok</a><a href="https://www.instagram.com/reel/${l.ig}/">IG Reel</a></div></div>`
+}); document.getElementById('lessons-list').innerHTML=lHtml;
+}
+render(fallbackSongs);
+
+// Firebase Live
+try{
+onSnapshot(collection(db,"songs"), snap=>{
+if(!snap.empty){ let live=[]; snap.forEach(d=>live.push(d.data())); if(live.length>0) render(live); }
+});
+}catch(e){console.log("Using fallback, Firebase config needed")}
+window.showTab=(id,el)=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active')}
+</script>
+</body>
+</html>
